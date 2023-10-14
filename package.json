@@ -1,0 +1,27 @@
+{
+  "name": "rownasie-org",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "trustedDependencies": [
+    "sharp"
+  ],
+  "dependencies": {
+    "@unocss/preset-attributify": "^0.56.5",
+    "@unocss/preset-web-fonts": "^0.56.5",
+    "@unocss/reset": "^0.56.5",
+    "astro": "^3.2.4",
+    "sharp": "^0.32.6",
+    "unocss": "^0.56.5"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.3",
+    "prettier-plugin-astro": "^0.12.0"
+  }
+}
