@@ -3,8 +3,11 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
-  "prettier.documentSelectors": ["**/*.astro"],
   "[astro]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "astro-build.astro-vscode"
   }
+  // "prettier.documentSelectors": ["**/*.astro"],
+  // "[astro]": {
+  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // }
 }

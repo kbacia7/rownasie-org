@@ -1,0 +1,58 @@
+---
+interface Props {
+  list: { tab: string; id: string }[];
+}
+
+const { list } = Astro.props;
+---
+
+<div data-root-tabs>
+  <ul class="overflow-auto">
+    {
+      list.map(({ tab, id }) => (
+        <li class="inline mr-5 last:mr-0">
+          <button class="btn btn-primary" data-tab-id={id}>
+            <span class="text-lg">{tab}</span>
+          </button>
+          <button />
+        </li>
+      ))
+    }
+  </ul>
+  <div class="tabs-content mt-5">
+    <slot />
+    <!-- {
+      list.map(({ id, content: Content }) => (
+        <div
+          id={id}
+          class="tab-inactive transition-opacity duration-500 ease-in"
+        >
+          <Content />
+        </div>
+      ))
+    } -->
+  </div>
+</div>
+
+<script>
+  const tabsRoots = document.querySelectorAll(`[data-root-tabs]`);
+  tabsRoots.forEach((rootEl) => {
+    const tabsContentEl = rootEl.querySelector(".tabs-content");
+    if (!tabsContentEl) return;
+
+    tabsContentEl.children[0].classList.replace("tab-inactive", "tab-active");
+    rootEl.querySelectorAll(`[data-tab-id]`).forEach((tabEl) => {
+      tabEl.addEventListener("click", () => {
+        let activeTab = rootEl.querySelector(".tab-active");
+        if (!activeTab) return;
+
+        const contentEl = document.getElementById(
+          tabEl.getAttribute("data-tab-id") ?? "",
+        );
+
+        activeTab.classList.replace("tab-active", "tab-inactive");
+        contentEl?.classList.replace("tab-inactive", "tab-active");
+      });
+    });
+  });
+</script>

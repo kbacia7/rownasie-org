@@ -1,0 +1,110 @@
+---
+import { Image } from "astro:assets";
+
+import arrowDown from "../images/move_down.png";
+---
+
+<div class="slider">
+  <div
+    class="slider-grid grid grid-flow-col auto-cols-100% overflow-hidden relative"
+  >
+    <slot />
+  </div>
+
+  <button class="slider-nav-prev hidden">
+    <Image
+      src={arrowDown}
+      alt="Right"
+      width={30}
+      height={30}
+      class="rotate-90"
+    />
+  </button>
+  <button class="slider-nav-next">
+    <Image
+      src={arrowDown}
+      alt="Right"
+      width={30}
+      height={30}
+      class="-rotate-90"
+    />
+  </button>
+</div>
+
+<script>
+  const scrollIntoContent = (currentActive: Element, newActive: Element) => {
+    currentActive.classList.remove("slider-active-content");
+    newActive.classList.add("slider-active-content");
+    newActive.scrollIntoView({
+      behavior: "smooth",
+    });
+  };
+
+  const toggleNavigationButtons = (
+    prevButton: Element,
+    nextButton: Element,
+    currentActive: Element,
+  ) => {
+    if (
+      currentActive.nextElementSibling &&
+      nextButton.classList.contains("hidden")
+    )
+      nextButton.classList.remove("hidden");
+
+    if (
+      !currentActive.nextElementSibling &&
+      !nextButton.classList.contains("hidden")
+    )
+      nextButton.classList.add("hidden");
+
+    if (
+      currentActive.previousElementSibling &&
+      prevButton.classList.contains("hidden")
+    )
+      prevButton.classList.remove("hidden");
+
+    if (
+      !currentActive.previousElementSibling &&
+      !prevButton.classList.contains("hidden")
+    )
+      prevButton.classList.add("hidden");
+  };
+
+  document.querySelectorAll(".slider").forEach((rootEl) => {
+    const elementsGrid = rootEl.querySelector(".slider-grid");
+    const firstContent = elementsGrid?.children?.[0];
+    if (!firstContent) return;
+
+    firstContent.classList.add("slider-active-content");
+
+    const prevButton = rootEl.querySelector(".slider-nav-prev");
+    const nextButton = rootEl.querySelector(".slider-nav-next");
+    if (!nextButton || !prevButton) return;
+
+    prevButton?.addEventListener("click", () => {
+      const activeContent = rootEl.querySelector(".slider-active-content");
+      const newActive = activeContent?.previousElementSibling;
+      if (!newActive) return;
+
+      scrollIntoContent(activeContent, newActive);
+      if (!newActive.previousElementSibling) {
+        prevButton.classList.add("hidden");
+      }
+
+      toggleNavigationButtons(prevButton, nextButton, newActive);
+    });
+
+    nextButton?.addEventListener("click", () => {
+      const activeContent = rootEl.querySelector(".slider-active-content");
+      const newActive = activeContent?.nextElementSibling;
+      if (!newActive) return;
+
+      scrollIntoContent(activeContent, newActive);
+      if (!newActive.nextElementSibling) {
+        nextButton.classList.add("hidden");
+      }
+
+      toggleNavigationButtons(prevButton, nextButton, newActive);
+    });
+  });
+</script>

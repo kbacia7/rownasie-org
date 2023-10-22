@@ -1,15 +1,46 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
 import Section from "../layouts/Section.astro";
 import LanguageSwitch from "../layouts/LanguageSwitch.astro";
 import Logo from "../components/Logo.astro";
 import arrowDown from "../images/move_down.png";
 import { Image } from "astro:assets";
+import Tabs from "../components/Tabs.astro";
+import { getCollection, getEntry } from "astro:content";
+import Slider from "../components/Slider.astro";
+import PersonDescription from "../components/PersonDescription.astro";
+import TabItem from "../components/TabItem.astro";
+
+const aboutUsCollection = await getCollection("about-us");
+const { Content: AssociationContent } =
+  (await aboutUsCollection
+    .find(({ slug }) => slug === "association")
+    ?.render()) ?? {};
+if (!AssociationContent) throw new Error("Association content is missing");
+
+const boardMembersCollection = await getCollection("board");
+const boardsContent = await Promise.all(
+  boardMembersCollection.map(async (entry) => {
+    return {
+      ...entry,
+      Content: (await entry.render()).Content,
+    };
+  }),
+);
+
+const auditCommitteeCollection = await getCollection("audit-committee");
+const auditCommitteeContent = await Promise.all(
+  auditCommitteeCollection.map(async (entry) => {
+    return {
+      ...entry,
+      Content: (await entry.render()).Content,
+    };
+  }),
+);
 ---
 
 <Layout title="Welcome to Astro.">
-  <header class="w-full h-full min-h-5xl bg-#776391 grid">
+  <header class="w-full h-full min-h-5xl bg-primary grid">
     <LanguageSwitch />
     <div
       class="pt-2 flex flex-col text-center justify-beetwen h-full items-center text-white"
@@ -52,5 +83,62 @@ import { Image } from "astro:assets";
   </div>
 
   <!-- TODO: Navigation here -->
-  <Section title="O nas" />
+  <Section title="O nas">
+    <Tabs
+      list={[
+        {
+          tab: "Category1",
+          id: "category-1",
+        },
+        {
+          tab: "Category2",
+          id: "category-2",
+        },
+        {
+          tab: "Category3",
+          id: "category-3",
+        },
+      ]}
+    >
+      <TabItem id="category-1">
+        <AssociationContent />
+      </TabItem>
+
+      <TabItem id="category-2">
+        <Slider list={boardsContent.map(({ slug }) => slug)}>
+          {
+            boardsContent.map((entry) => (
+              <div id={entry.slug}>
+                <PersonDescription
+                  name={entry.data.name}
+                  photo={entry.data.photo}
+                  title={entry.data.title}
+                >
+                  <entry.Content />
+                </PersonDescription>
+              </div>
+            ))
+          }
+        </Slider>
+      </TabItem>
+
+      <TabItem id="category-3">
+        <Slider list={auditCommitteeContent.map(({ slug }) => slug)}>
+          {
+            auditCommitteeContent.map((entry) => (
+              <div id={entry.slug}>
+                <PersonDescription
+                  name={entry.data.name}
+                  photo={entry.data.photo}
+                  title={entry.data.title}
+                >
+                  <entry.Content />
+                </PersonDescription>
+              </div>
+            ))
+          }
+        </Slider>
+      </TabItem>
+    </Tabs>
+  </Section>
 </Layout>
