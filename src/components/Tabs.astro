@@ -21,16 +21,6 @@ const { list } = Astro.props;
   </ul>
   <div class="tabs-content mt-5 overflow-hidden">
     <slot />
-    <!-- {
-      list.map(({ id, content: Content }) => (
-        <div
-          id={id}
-          class="tab-inactive transition-opacity duration-500 ease-in"
-        >
-          <Content />
-        </div>
-      ))
-    } -->
   </div>
 </div>
 
