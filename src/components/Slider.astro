@@ -11,24 +11,26 @@ import arrowDown from "../images/move_down.png";
     <slot />
   </div>
 
-  <button class="slider-nav-prev hidden">
-    <Image
-      src={arrowDown}
-      alt="Right"
-      width={30}
-      height={30}
-      class="rotate-90"
-    />
-  </button>
-  <button class="slider-nav-next">
-    <Image
-      src={arrowDown}
-      alt="Right"
-      width={30}
-      height={30}
-      class="-rotate-90"
-    />
-  </button>
+  <div class="flex justify-center">
+    <button class="slider-nav-prev hidden">
+      <Image
+        src={arrowDown}
+        alt="Right"
+        width={30}
+        height={30}
+        class="rotate-90"
+      />
+    </button>
+    <button class="slider-nav-next">
+      <Image
+        src={arrowDown}
+        alt="Right"
+        width={30}
+        height={30}
+        class="-rotate-90"
+      />
+    </button>
+  </div>
 </div>
 
 <script>
@@ -37,6 +39,8 @@ import arrowDown from "../images/move_down.png";
     newActive.classList.add("slider-active-content");
     newActive.scrollIntoView({
       behavior: "smooth",
+      block: "nearest",
+      inline: "center",
     });
   };
 
