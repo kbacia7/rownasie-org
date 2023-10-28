@@ -52,6 +52,14 @@ const contactInfoCollection = defineCollection({
     }),
 });
 
+const supportUsCollection = defineCollection({
+  type: "content",
+  schema: () =>
+    z.object({
+      donateLink: z.string(),
+    }),
+});
+
 export const collections = {
   "about-us": aboutUsCollection,
   board: boardCollection,
@@ -59,4 +67,5 @@ export const collections = {
   projects: projectsCollection,
   support: supportCollection,
   contact: contactInfoCollection,
+  "support-us": supportUsCollection,
 };

@@ -66,8 +66,23 @@ const supportContent = await Promise.all(
 
 const contactInfoCollection = await getCollection("contact");
 const contactInfo = contactInfoCollection.find(({ id }) => id === "contact");
-
 if (!contactInfo) throw new Error("Contact info is missing");
+
+const supportUsCollection = await getCollection("support-us");
+const supportUsContent = supportUsCollection.find(
+  ({ slug }) => slug === "support-us",
+);
+if (!supportUsContent) throw new Error("Support us content is missing");
+const SupportUsContent = (await supportUsContent.render()).Content;
+
+// const supportUsContent = await Promise.all(
+//   supportCollection.map(async (entry) => {
+//     return {
+//       ...entry,
+//       Content: (await entry.render()).Content,
+//     };
+//   }),
+// );
 ---
 
 <Layout title="Welcome to Astro.">
@@ -248,5 +263,12 @@ if (!contactInfo) throw new Error("Contact info is missing");
           referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
+  </Section>
+
+  <Section title="Wspieraj nas">
+    <SupportUsContent />
+    <a href={supportUsContent.data.donateLink} target="_blank">
+      <button class="btn btn-secondary block m-auto"> Wpłać darowiznę</button>
+    </a>
   </Section>
 </Layout>
