@@ -6,10 +6,13 @@ import Logo from "../components/Logo.astro";
 import arrowDown from "../images/move_down.png";
 import { Image } from "astro:assets";
 import Tabs from "../components/Tabs.astro";
-import { getCollection, getEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import Slider from "../components/Slider.astro";
 import PersonDescription from "../components/PersonDescription.astro";
 import TabItem from "../components/TabItem.astro";
+import Project from "../components/Project.astro";
+import ProjectsGrid from "../components/ProjectsGrid.astro";
+import splitIntoChunks from "../helpers/splitIntoChunks.mts";
 
 const aboutUsCollection = await getCollection("about-us");
 const { Content: AssociationContent } =
@@ -31,6 +34,29 @@ const boardsContent = await Promise.all(
 const auditCommitteeCollection = await getCollection("audit-committee");
 const auditCommitteeContent = await Promise.all(
   auditCommitteeCollection.map(async (entry) => {
+    return {
+      ...entry,
+      Content: (await entry.render()).Content,
+    };
+  }),
+);
+
+const projectsCollection = await getCollection("projects");
+const projectsContentChunks = splitIntoChunks(
+  await Promise.all(
+    projectsCollection.map(async (entry) => {
+      return {
+        ...entry,
+        Content: (await entry.render()).Content,
+      };
+    }),
+  ),
+  4,
+);
+
+const supportCollection = await getCollection("support");
+const supportContent = await Promise.all(
+  supportCollection.map(async (entry) => {
     return {
       ...entry,
       Content: (await entry.render()).Content,
@@ -139,6 +165,41 @@ const auditCommitteeContent = await Promise.all(
           }
         </Slider>
       </TabItem>
+    </Tabs>
+  </Section>
+
+  <Section title="Projekty">
+    <Slider>
+      {
+        projectsContentChunks.map((chunk) => {
+          return (
+            <ProjectsGrid>
+              {chunk.map((entry) => (
+                <Project name={entry.data.name}>
+                  <entry.Content />
+                </Project>
+              ))}
+            </ProjectsGrid>
+          );
+        })
+      }
+    </Slider>
+  </Section>
+
+  <Section title="Wsparcie">
+    <Tabs
+      list={supportContent.map(({ data: { name }, slug }) => ({
+        tab: name,
+        id: slug,
+      }))}
+    >
+      {
+        supportContent.map((entry) => (
+          <TabItem id={entry.slug}>
+            <entry.Content />
+          </TabItem>
+        ))
+      }
     </Tabs>
   </Section>
 </Layout>

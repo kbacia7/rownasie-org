@@ -1,4 +1,5 @@
 import { defineCollection, z } from "astro:content";
+
 const aboutUsCollection = defineCollection({
   type: "content",
 });
@@ -23,8 +24,26 @@ const auditCommitteeCollection = defineCollection({
     }),
 });
 
+const projectsCollection = defineCollection({
+  type: "content",
+  schema: () =>
+    z.object({
+      name: z.string(),
+    }),
+});
+
+const supportCollection = defineCollection({
+  type: "content",
+  schema: () =>
+    z.object({
+      name: z.string(),
+    }),
+});
+
 export const collections = {
   "about-us": aboutUsCollection,
   board: boardCollection,
   "audit-committee": auditCommitteeCollection,
+  projects: projectsCollection,
+  support: supportCollection,
 };
