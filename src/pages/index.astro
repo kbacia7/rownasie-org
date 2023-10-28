@@ -4,6 +4,8 @@ import Section from "../layouts/Section.astro";
 import LanguageSwitch from "../layouts/LanguageSwitch.astro";
 import Logo from "../components/Logo.astro";
 import arrowDown from "../images/move_down.png";
+import fbIcon from "../images/fb.png";
+import igIcon from "../images/ig.png";
 import { Image } from "astro:assets";
 import Tabs from "../components/Tabs.astro";
 import { getCollection } from "astro:content";
@@ -64,9 +66,12 @@ const supportContent = await Promise.all(
   }),
 );
 
-const contactInfoCollection = await getCollection("contact");
-const contactInfo = contactInfoCollection.find(({ id }) => id === "contact");
-if (!contactInfo) throw new Error("Contact info is missing");
+const associationInfoCollection = await getCollection("association-info");
+const associationInfo = associationInfoCollection.find(
+  ({ id }) => id === "main",
+);
+
+if (!associationInfo) throw new Error("Association info is missing");
 
 const supportUsCollection = await getCollection("support-us");
 const supportUsContent = supportUsCollection.find(
@@ -231,26 +236,26 @@ const SupportUsContent = (await supportUsContent.render()).Content;
       <div class="col-span-1">
         <span class="text-4xl font-bold">Biuro:</span>
         {/* NOTE: Uhuhuhu, XSS risky */}
-        <p class="text-2xl mt-3" set:html={contactInfo.data.address} />
+        <p class="text-2xl mt-3" set:html={associationInfo.data.address} />
       </div>
       <div class="col-span-2">
         <p class="text-2xl mb-3">
           <span>
             <span class="font-bold">Zapytania ogólne:</span>
-            {contactInfo.data.emailQuestions}
+            {associationInfo.data.emailQuestions}
           </span>
         </p>
         <p class="text-2xl mb-3">
           <span class="font-bold">Wsparcie i pomoc:</span>
-          {contactInfo.data.emailHelp}
+          {associationInfo.data.emailHelp}
         </p>
         <p class="text-2xl mb-3">
           <span class="font-bold">Dane osobowe:</span>
-          {contactInfo.data.emailRodo}
+          {associationInfo.data.emailRodo}
         </p>
         <p class="text-2xl mb-3">
           <span class="font-bold">Tel:</span>
-          {contactInfo.data.tel}
+          {associationInfo.data.tel}
         </p>
       </div>
       <div class="col-span-3 grid-row-start-2">
@@ -271,4 +276,65 @@ const SupportUsContent = (await supportUsContent.render()).Content;
       <button class="btn btn-secondary block m-auto"> Wpłać darowiznę</button>
     </a>
   </Section>
+
+  <footer class="clear-both">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 34.5">
+      <path
+        style=" stroke:none;fill-rule:nonzero;fill:rgb(46.669006%,38.819885%,56.858826%);fill-opacity:1;"
+        d="M 332.3984 7.0711 C 306.1484 2.2742 279.5234 -1.6984 252.75 0.5516 C 226.875 2.7234 203.0234 15.2469 177 16.1453 C 150.6016 17.0438 124.125 12.3953 98.5508 6.4734 C 55.5781 -3.425 21.5273 8.7234 0.0039 21.243 L 0.0039 34.7 L 374.9961 34.7 L 374.9961 15.9188 C 360.9727 12.2469 346.4961 9.6219 332.3984 7.0711 Z M 332.3984 7.0711"
+      ></path>
+    </svg>
+    <div class="bg-primary px-20">
+      <div class="flex justify-between">
+        <div>
+          <div class="mb-6">
+            <h4 class="text-xl font-bold">Stowarzyszenie Fabryka Równości</h4>
+            <p class="text-xl" set:html={associationInfo.data.address} />
+          </div>
+          <div>
+            <p class="text-xl">NIP: {associationInfo.data.nip}</p>
+            <p class="text-xl">KRS: {associationInfo.data.krs}</p>
+          </div>
+        </div>
+        <div>
+          <div class="mb-6">
+            <h4 class="text-xl font-bold">Konto bankowe stowarzyszenia:</h4>
+            <p class="text-xl" set:html={associationInfo.data.bankAccount} />
+          </div>
+        </div>
+      </div>
+      <div class="mt-20 pb-5 border-b border-b-black">
+        <a href={associationInfo.data.fbLink} rel="noopener" target="_blank">
+          <Image
+            class="mr-5 inline"
+            src={fbIcon}
+            width="50"
+            height="50"
+            alt="FB Icon"
+          />
+        </a>
+
+        <a href={associationInfo.data.igLink} rel="noopener" target="_blank">
+          <Image
+            class="inline"
+            src={igIcon}
+            width="50"
+            height="50"
+            alt="IG Icon"
+          />
+        </a>
+      </div>
+      <div class="flex justify-between">
+        <div>
+          <p class="text-xl font-bold underline">
+            <a href="#">Statut</a>
+          </p>
+          <p class="text-xl font-bold underline">
+            <a href="#">Polityka Prywatności</a>
+          </p>
+        </div>
+        <p class="text-xl">© {new Date().getFullYear()} Fabryka Równości</p>
+      </div>
+    </div>
+  </footer>
 </Layout>
