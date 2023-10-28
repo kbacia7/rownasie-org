@@ -40,10 +40,23 @@ const supportCollection = defineCollection({
     }),
 });
 
+const contactInfoCollection = defineCollection({
+  type: "data",
+  schema: () =>
+    z.object({
+      address: z.string(),
+      emailQuestions: z.string(),
+      emailHelp: z.string(),
+      emailRodo: z.string(),
+      tel: z.string(),
+    }),
+});
+
 export const collections = {
   "about-us": aboutUsCollection,
   board: boardCollection,
   "audit-committee": auditCommitteeCollection,
   projects: projectsCollection,
   support: supportCollection,
+  contact: contactInfoCollection,
 };

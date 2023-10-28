@@ -63,6 +63,11 @@ const supportContent = await Promise.all(
     };
   }),
 );
+
+const contactInfoCollection = await getCollection("contact");
+const contactInfo = contactInfoCollection.find(({ id }) => id === "contact");
+
+if (!contactInfo) throw new Error("Contact info is missing");
 ---
 
 <Layout title="Welcome to Astro.">
@@ -210,26 +215,27 @@ const supportContent = await Promise.all(
     >
       <div class="col-span-1">
         <span class="text-4xl font-bold">Biuro:</span>
-        <p class="text-2xl mt-3">ul. Jaracza 6 lok. 7U <br />90-268 Łódź</p>
+        {/* NOTE: Uhuhuhu, XSS risky */}
+        <p class="text-2xl mt-3" set:html={contactInfo.data.address} />
       </div>
       <div class="col-span-2">
         <p class="text-2xl mb-3">
           <span>
             <span class="font-bold">Zapytania ogólne:</span>
-             poczta@rownasie.org
+            {contactInfo.data.emailQuestions}
           </span>
         </p>
         <p class="text-2xl mb-3">
           <span class="font-bold">Wsparcie i pomoc:</span>
-           pomoc@rownasie.org
+          {contactInfo.data.emailHelp}
         </p>
         <p class="text-2xl mb-3">
           <span class="font-bold">Dane osobowe:</span>
-           dane@rownasie.org
+          {contactInfo.data.emailRodo}
         </p>
         <p class="text-2xl mb-3">
           <span class="font-bold">Tel:</span>
-           +48 667 414 449
+          {contactInfo.data.tel}
         </p>
       </div>
       <div class="col-span-3 grid-row-start-2">
