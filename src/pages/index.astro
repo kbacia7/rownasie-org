@@ -15,6 +15,7 @@ import TabItem from "../components/TabItem.astro";
 import Project from "../components/Project.astro";
 import ProjectsGrid from "../components/ProjectsGrid.astro";
 import splitIntoChunks from "../helpers/splitIntoChunks.mts";
+import Navigation from "../components/Navigation.astro";
 
 const aboutUsCollection = await getCollection("about-us");
 const { Content: AssociationContent } =
@@ -133,7 +134,7 @@ const SupportUsContent = (await supportUsContent.render()).Content;
     />
   </div>
 
-  <!-- TODO: Navigation here -->
+  <Navigation />
   <Section title="O nas">
     <Tabs
       list={[

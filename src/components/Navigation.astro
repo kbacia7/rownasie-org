@@ -1,0 +1,48 @@
+---
+import { Image } from "astro:assets";
+import brandImg from "../images/brand.png";
+---
+
+<nav class="desktop-menu">
+  <div class="fixed top-0 translate-x--1/3 translate-y-1/2">
+    <div
+      class="grid gap-10"
+      style={{ gridTemplateColumns: "max-content max-content" }}
+    >
+      <div>
+        <Image src={brandImg} width="500" alt="brand" class="rotate--30" />
+      </div>
+      <div>
+        <div class="h-full max-h-full grid grid-rows-12">
+          <div class="indent--30px row-start-4 row-end-4">
+            <span class="text-3xl text-#a6a6a6">
+              <a href="#">Co robimy</a>
+            </span>
+          </div>
+          <div class="row-start-5 row-end-5">
+            <span class="text-3xl text-#a6a6a6">
+              <a href="#">Co robimy</a>
+            </span>
+          </div>
+          <div class="row-start-6 row-end-8">
+            <div class="h-full flex justify-center items-center">
+              <span class="text-4xl font-bold">
+                <a href="#">Co robimy (a)</a>
+              </span>
+            </div>
+          </div>
+          <div class="row-start-8 row-end-8">
+            <span class="text-3xl text-#a6a6a6">
+              <a href="#">Co robimy</a>
+            </span>
+          </div>
+          <div class="indent--30px row-start-9 row-end-9">
+            <span class="text-3xl text-#a6a6a6">
+              <a href="#">Co robimy</a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
