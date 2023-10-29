@@ -888,6 +888,11 @@
   resolved "https://registry.yarnpkg.com/@unocss/core/-/core-0.56.5.tgz#5c3caf24dd0d13e359aa71112d0487b685cb165a"
   integrity sha512-fx5VhOjSHn0HdV2D34pEwFMAHJcJQRTCp1xEE4GzxY1irXzaa+m2aYf5PZjmDxehiOC16IH7TO9FOWANXk1E0w==
 
+"@unocss/core@0.57.1", "@unocss/core@^0.57.1":
+  version "0.57.1"
+  resolved "https://registry.yarnpkg.com/@unocss/core/-/core-0.57.1.tgz#413bb5dc5546e3b943a67d1040567c2c90bb4120"
+  integrity sha512-cqQW/4gCuk+bFMPg9lBanuRNQ9Lx1l4PpMN/6uKxI5WROpq7ce/Xb4uGvAxKLh3ITtFSpXs2cLfsy7QD6cVD/Q==
+
 "@unocss/extractor-arbitrary-variants@0.56.5":
   version "0.56.5"
   resolved "https://registry.yarnpkg.com/@unocss/extractor-arbitrary-variants/-/extractor-arbitrary-variants-0.56.5.tgz#fa88a30bc10e68f2899f375aa01e03f11ea18d01"
@@ -996,6 +1001,14 @@
   dependencies:
     "@unocss/core" "^0.56.5"
 
+"@unocss/rule-utils@0.57.1":
+  version "0.57.1"
+  resolved "https://registry.yarnpkg.com/@unocss/rule-utils/-/rule-utils-0.57.1.tgz#eb6e2af8ac79777d4ea1760eee46b5e9a348a274"
+  integrity sha512-Hdicz7YORZx7SHICldzOGjPNeJwk/Xhy3cycqiPbg6nB6d639bpgZn5BsbDzHCPKpguwDomUqTZS6+C3s7tUVg==
+  dependencies:
+    "@unocss/core" "^0.57.1"
+    magic-string "^0.30.5"
+
 "@unocss/scope@0.56.5":
   version "0.56.5"
   resolved "https://registry.yarnpkg.com/@unocss/scope/-/scope-0.56.5.tgz#2e6fd0585cf54b5af01713b9b61c27944323fa54"
@@ -1029,6 +1042,15 @@
   dependencies:
     "@unocss/core" "0.56.5"
     "@unocss/rule-utils" "0.56.5"
+    css-tree "^2.3.1"
+
+"@unocss/transformer-directives@^0.57.1":
+  version "0.57.1"
+  resolved "https://registry.yarnpkg.com/@unocss/transformer-directives/-/transformer-directives-0.57.1.tgz#0bf2ffe8d3ee8fb8c8f1e624357ed47bd56487f6"
+  integrity sha512-rIk3XEU2NywEJUOkngBSmJfvS3IVgxkkqgMvuIqz8ZDbwWhepuMxsiI0QR3ypkipGr/eKK5DJ7eK0OVlo6FPFA==
+  dependencies:
+    "@unocss/core" "0.57.1"
+    "@unocss/rule-utils" "0.57.1"
     css-tree "^2.3.1"
 
 "@unocss/transformer-variant-group@0.56.5":
@@ -2635,7 +2657,7 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-magic-string@^0.30.3:
+magic-string@^0.30.3, magic-string@^0.30.5:
   version "0.30.5"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.5.tgz#1994d980bd1c8835dc6e78db7cbd4ae4f24746f9"
   integrity sha512-7xlpfBaQaP/T6Vh8MO/EqXSW5En6INHEvEXQiuff7Gku0PWjU3uf6w/j9o7O+SpB5fOAkrI5HeoNgwjEO0pFsA==
