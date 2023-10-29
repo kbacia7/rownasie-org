@@ -1,8 +1,52 @@
 ---
 import { Image } from "astro:assets";
 import brandImg from "../images/brand.png";
+import toSlug from "../helpers/toSlug.mts";
+
+// NOTE: I'm not sure how get it in build time at this moment, probably i18n will be useful here
+const sections = {
+  "O nas": { gridRowStart: 4, gridRowEnd: 4 },
+  Projekty: { gridRowStart: 5, gridRowEnd: 5 },
+  Wsparcie: {
+    gridRowStart: 6,
+    gridRowEnd: 8,
+    display: "flex",
+    alignItems: "center",
+  },
+  Kontakt: { gridRowStart: 8, gridRowEnd: 8 },
+  "Wspieraj nas": { gridRowStart: 9, gridRowEnd: 9 },
+};
 ---
 
+<style>
+  .element-0 {
+    grid-row: 4;
+    @apply indent--30px;
+  }
+
+  .element-1 {
+    grid-row: 5;
+  }
+
+  .element-2 {
+    grid-row-start: 6;
+    grid-row-end: 8;
+    @apply flex items-center;
+  }
+
+  .element-2 span {
+    @apply text-4xl font-bold text-black;
+  }
+
+  .element-3 {
+    grid-row: 8;
+  }
+
+  .element-4 {
+    grid-row: 9;
+    @apply indent--30px;
+  }
+</style>
 <nav class="desktop-menu">
   <div class="fixed top-0 translate-x--1/3 translate-y-1/2">
     <div
@@ -10,39 +54,124 @@ import brandImg from "../images/brand.png";
       style={{ gridTemplateColumns: "max-content max-content" }}
     >
       <div>
-        <Image src={brandImg} width="500" alt="brand" class="rotate--30" />
+        <Image id="navigation-wheel" src={brandImg} width="500" alt="brand" />
       </div>
       <div>
         <div class="h-full max-h-full grid grid-rows-12">
-          <div class="indent--30px row-start-4 row-end-4">
-            <span class="text-3xl text-#a6a6a6">
-              <a href="#">Co robimy</a>
-            </span>
-          </div>
-          <div class="row-start-5 row-end-5">
-            <span class="text-3xl text-#a6a6a6">
-              <a href="#">Co robimy</a>
-            </span>
-          </div>
-          <div class="row-start-6 row-end-8">
-            <div class="h-full flex justify-center items-center">
-              <span class="text-4xl font-bold">
-                <a href="#">Co robimy (a)</a>
-              </span>
-            </div>
-          </div>
-          <div class="row-start-8 row-end-8">
-            <span class="text-3xl text-#a6a6a6">
-              <a href="#">Co robimy</a>
-            </span>
-          </div>
-          <div class="indent--30px row-start-9 row-end-9">
-            <span class="text-3xl text-#a6a6a6">
-              <a href="#">Co robimy</a>
-            </span>
-          </div>
+          {
+            Object.keys(sections).map((section, index) => {
+              return (
+                <div
+                  class:list={[`element-${index}`]}
+                  data-wheel-item-index={index}
+                  data-wheel-item-slug={toSlug(section)}
+                >
+                  <span class="text-3xl text-#a6a6a6">
+                    <a href="#">{section}</a>
+                  </span>
+                </div>
+              );
+            })
+          }
         </div>
       </div>
     </div>
   </div>
+
+  <script>
+    let currentRotate = -30;
+    const MAX_ITEMS_IN_WHEEL = 5;
+
+    const setActiveItem = (index: number, withoutAnim: boolean) => {
+      const newActive = document.querySelector(
+        `[data-wheel-item-index='${index}']`,
+      );
+
+      const currentActive = document.querySelector(
+        `[data-wheel-item-index].element-2`,
+      );
+      if (!newActive || !currentActive) return;
+
+      // NOTE: Oh god move it...
+      const elNumberClass = parseInt(
+        newActive.className.at(
+          newActive.className.indexOf("element-") + "element-".length,
+        ) ?? "",
+      );
+
+      if (withoutAnim) {
+        const activeItemIndex = parseInt(
+          currentActive.getAttribute("data-wheel-item-index") ?? "",
+        );
+
+        if (activeItemIndex === index) return;
+
+        const movement = 2 - elNumberClass;
+        document.querySelectorAll("[data-wheel-item-index]").forEach((el) => {
+          const elementNumberClass = parseInt(
+            el.className.at(
+              el.className.indexOf("element-") + "element-".length,
+            ) ?? "",
+          );
+
+          const nextElNumberClass =
+            (MAX_ITEMS_IN_WHEEL + (elementNumberClass + movement)) %
+            MAX_ITEMS_IN_WHEEL;
+
+          el.classList.toggle(`element-${elementNumberClass}`);
+          el.classList.toggle(`element-${nextElNumberClass}`);
+        });
+      }
+    };
+
+    const navigationWheel = document.getElementById("navigation-wheel");
+    if (!navigationWheel) throw Error("Can't find wheel");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(async ({ isIntersecting, target }) => {
+          if (isIntersecting) {
+            const newItemSlug = target.getAttribute("data-section-slug") ?? "";
+            const newActiveIndex = parseInt(
+              document
+                .querySelector(`[data-wheel-item-slug='${newItemSlug}']`)
+                ?.getAttribute("data-wheel-item-index") ?? "",
+            );
+
+            const currentActiveIndex = parseInt(
+              document
+                .querySelector(`.element-2`)
+                ?.getAttribute("data-wheel-item-index") ?? "",
+            );
+
+            let nextRotate =
+              currentRotate + (currentActiveIndex > newActiveIndex ? 30 : -30);
+            const anim = navigationWheel.animate(
+              [
+                { transform: `rotate(${currentRotate}deg)` },
+                { transform: `rotate(${nextRotate}deg)` },
+              ],
+              {
+                duration: 450,
+                fill: "forwards",
+              },
+            );
+            await anim.finished;
+            currentRotate = nextRotate;
+            anim.commitStyles();
+            anim.cancel();
+
+            setActiveItem(newActiveIndex, true);
+          }
+        });
+      },
+      {
+        rootMargin: "-50% 0% -50% 0%",
+      },
+    );
+
+    document.querySelectorAll("section").forEach((el) => {
+      observer.observe(el);
+    });
+  </script>
 </nav>
