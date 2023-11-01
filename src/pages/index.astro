@@ -17,6 +17,8 @@ import ProjectsGrid from "../components/ProjectsGrid.astro";
 import splitIntoChunks from "../helpers/splitIntoChunks.mts";
 import Navigation from "../components/Navigation.astro";
 
+import "./index.css";
+
 const aboutUsCollection = await getCollection("about-us");
 const { Content: AssociationContent } =
   (await aboutUsCollection
@@ -92,13 +94,13 @@ const SupportUsContent = (await supportUsContent.render()).Content;
 ---
 
 <Layout title="Welcome to Astro.">
-  <header class="w-full h-full min-h-5xl bg-primary grid">
+  <header class="w-full h-full min-h-xl md:min-h-5xl bg-primary grid">
     <LanguageSwitch />
     <div
       class="pt-2 flex flex-col text-center justify-beetwen h-full items-center text-white"
     >
       <Logo />
-      <h1 class="text-6xl font-bold mt-5">To z fabryk wychodzą rewolucje!</h1>
+      <h1 class="font-bold mt-5">To z fabryk wychodzą rewolucje!</h1>
     </div>
 
     <!-- TODO: Arror down here -->
@@ -126,11 +128,9 @@ const SupportUsContent = (await supportUsContent.render()).Content;
       </defs>
     </svg>
     <Image
-      class="absolute top-15 left-1/2 -translate-x-1/2"
+      class="absolute top-0 w-20% md:w-90px md:top-15 left-1/2 -translate-x-1/2"
       src={arrowDown}
       alt="Arrow down to body"
-      width={90}
-      height={90}
     />
   </div>
 
@@ -230,36 +230,33 @@ const SupportUsContent = (await supportUsContent.render()).Content;
   </Section>
 
   <Section title="Kontakt">
-    <div
-      class="grid grid-cols-3"
-      style={{ gridTemplateRows: "minmax(0, 1fr), 800px" }}
-    >
-      <div class="col-span-1">
-        <span class="text-4xl font-bold">Biuro:</span>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-0">
+      <div class="col-span-1 md:col-span-1">
+        <h3 class="font-bold">Biuro:</h3>
         {/* NOTE: Uhuhuhu, XSS risky */}
-        <p class="text-2xl mt-3" set:html={associationInfo.data.address} />
+        <p class="mt-3" set:html={associationInfo.data.address} />
       </div>
-      <div class="col-span-2">
-        <p class="text-2xl mb-3">
+      <div class="col-span-1 md:col-span-2">
+        <p class="mb-3">
           <span>
             <span class="font-bold">Zapytania ogólne:</span>
             {associationInfo.data.emailQuestions}
           </span>
         </p>
-        <p class="text-2xl mb-3">
+        <p class="col-span-1 md:col-span-2 mb-3">
           <span class="font-bold">Wsparcie i pomoc:</span>
           {associationInfo.data.emailHelp}
         </p>
-        <p class="text-2xl mb-3">
+        <p class="mb-3">
           <span class="font-bold">Dane osobowe:</span>
           {associationInfo.data.emailRodo}
         </p>
-        <p class="text-2xl mb-3">
+        <p class="mb-3">
           <span class="font-bold">Tel:</span>
           {associationInfo.data.tel}
         </p>
       </div>
-      <div class="col-span-3 grid-row-start-2">
+      <div class="hidden md:block col-span-3 grid-row-start-2">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2468.815611051249!2d19.45457077643611!3d51.77297797187484!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471bcba2e0685ba3%3A0xcabf7d1d9e9428cf!2sStowarzyszenie%20Fabryka%20R%C3%B3wno%C5%9Bci!5e0!3m2!1sen!2ses!4v1691925154740!5m2!1sen!2ses"
           width="100%"
@@ -278,33 +275,33 @@ const SupportUsContent = (await supportUsContent.render()).Content;
     </a>
   </Section>
 
-  <footer class="clear-both">
+  <footer class="clear-both w-full">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 34.5">
       <path
         style=" stroke:none;fill-rule:nonzero;fill:rgb(46.669006%,38.819885%,56.858826%);fill-opacity:1;"
         d="M 332.3984 7.0711 C 306.1484 2.2742 279.5234 -1.6984 252.75 0.5516 C 226.875 2.7234 203.0234 15.2469 177 16.1453 C 150.6016 17.0438 124.125 12.3953 98.5508 6.4734 C 55.5781 -3.425 21.5273 8.7234 0.0039 21.243 L 0.0039 34.7 L 374.9961 34.7 L 374.9961 15.9188 C 360.9727 12.2469 346.4961 9.6219 332.3984 7.0711 Z M 332.3984 7.0711"
       ></path>
     </svg>
-    <div class="bg-primary px-20">
-      <div class="flex justify-between">
+    <div class="bg-primary px-2 lg:px-20">
+      <div class="flex justify-between flex-col md:flex-row">
         <div>
-          <div class="mb-6">
-            <h4 class="text-xl font-bold">Stowarzyszenie Fabryka Równości</h4>
-            <p class="text-xl" set:html={associationInfo.data.address} />
+          <div class="my-6 md:mt-0">
+            <p class="text-lg font-bold">Stowarzyszenie Fabryka Równości</p>
+            <p set:html={associationInfo.data.address} />
           </div>
           <div>
-            <p class="text-xl">NIP: {associationInfo.data.nip}</p>
-            <p class="text-xl">KRS: {associationInfo.data.krs}</p>
+            <p>NIP: {associationInfo.data.nip}</p>
+            <p>KRS: {associationInfo.data.krs}</p>
           </div>
         </div>
         <div>
-          <div class="mb-6">
-            <h4 class="text-xl font-bold">Konto bankowe stowarzyszenia:</h4>
-            <p class="text-xl" set:html={associationInfo.data.bankAccount} />
+          <div class="my-6 md:mt-0">
+            <p class="font-bold">Konto bankowe stowarzyszenia:</p>
+            <p set:html={associationInfo.data.bankAccount} />
           </div>
         </div>
       </div>
-      <div class="mt-20 pb-5 border-b border-b-black">
+      <div class="py-5 md:pt-20 border-b border-b-black">
         <a href={associationInfo.data.fbLink} rel="noopener" target="_blank">
           <Image
             class="mr-5 inline"
@@ -325,16 +322,16 @@ const SupportUsContent = (await supportUsContent.render()).Content;
           />
         </a>
       </div>
-      <div class="flex justify-between">
+      <div class="flex flex-col md:flex-row justify-between">
         <div>
-          <p class="text-xl font-bold underline">
+          <p class="font-bold underline">
             <a href="#">Statut</a>
           </p>
-          <p class="text-xl font-bold underline">
+          <p class="font-bold underline">
             <a href="#">Polityka Prywatności</a>
           </p>
         </div>
-        <p class="text-xl">© {new Date().getFullYear()} Fabryka Równości</p>
+        <p>© {new Date().getFullYear()} Fabryka Równości</p>
       </div>
     </div>
   </footer>

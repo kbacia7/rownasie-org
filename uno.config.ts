@@ -17,7 +17,7 @@ export default defineConfig({
     }),
   ],
   shortcuts: {
-    btn: "rounded-md text-white px-5 py-4",
+    btn: "rounded-md text-white px-3 py-2 md:px-5 md:py-4",
     "btn-primary": "bg-primary",
     "btn-secondary": "bg-secondary",
     "tab-active": "opacity-100 h-auto",

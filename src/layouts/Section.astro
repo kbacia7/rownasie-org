@@ -8,15 +8,15 @@ const { title } = Astro.props;
 ---
 
 <section
-  class="float-right w-6/10 pt-5 pb-25"
+  class="float-right lg:w-6/10 w-full pt-5 pb-25 px-5"
   data-section-slug={toSlug(title)}
 >
   <div class="inline-block border-#ef6c92 border-t-12">
-    <h3 class="text-6xl mt-7 mb-10 font-bold">
+    <h2 class="mt-7 mb-10 font-bold">
       {title}
-    </h3>
+    </h2>
   </div>
-  <div class="w-9/10">
+  <div class="w-full lg:w-9/10">
     <slot />
   </div>
 </section>
