@@ -57,7 +57,10 @@ const sections = {
         <Image id="navigation-wheel" src={brandImg} width="500" alt="brand" />
       </div>
       <div>
-        <div class="h-full max-h-full grid grid-rows-12">
+        <div
+          id="navigation-wheel-items"
+          class="h-full max-h-full grid grid-rows-12"
+        >
           {
             Object.keys(sections).map((section, index) => {
               return (
@@ -90,13 +93,18 @@ const sections = {
       const currentActive = document.querySelector(
         `[data-wheel-item-index].element-2`,
       );
+
       if (!newActive || !currentActive) return;
 
       // NOTE: Oh god move it...
-      const elNumberClass = parseInt(
+      const newActiveElNumberClass = parseInt(
         newActive.className.at(
           newActive.className.indexOf("element-") + "element-".length,
         ) ?? "",
+      );
+
+      const newActiveItemIndex = parseInt(
+        newActive.getAttribute("data-wheel-item-index") ?? "",
       );
 
       if (withoutAnim) {
@@ -106,8 +114,12 @@ const sections = {
 
         if (activeItemIndex === index) return;
 
-        const movement = 2 - elNumberClass;
+        const movement = 2 - newActiveElNumberClass;
         document.querySelectorAll("[data-wheel-item-index]").forEach((el) => {
+          const elItemIndex = parseInt(
+            el.getAttribute("data-wheel-item-index") ?? "",
+          );
+
           const elementNumberClass = parseInt(
             el.className.at(
               el.className.indexOf("element-") + "element-".length,
@@ -120,12 +132,24 @@ const sections = {
 
           el.classList.toggle(`element-${elementNumberClass}`);
           el.classList.toggle(`element-${nextElNumberClass}`);
+          if (
+            (elItemIndex > newActiveItemIndex && 2 > nextElNumberClass) ||
+            (newActiveItemIndex > elItemIndex && nextElNumberClass > 2)
+          ) {
+            el.classList.add("hidden");
+          } else {
+            el.classList.remove("hidden");
+          }
         });
       }
     };
 
     const navigationWheel = document.getElementById("navigation-wheel");
-    if (!navigationWheel) throw Error("Can't find wheel");
+    const navigationWheelItems = document.getElementById(
+      "navigation-wheel-items",
+    );
+    if (!navigationWheel || !navigationWheelItems)
+      throw Error("Can't find wheel");
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -156,6 +180,7 @@ const sections = {
                 fill: "forwards",
               },
             );
+
             await anim.finished;
             currentRotate = nextRotate;
             anim.commitStyles();
