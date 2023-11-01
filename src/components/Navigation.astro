@@ -2,20 +2,10 @@
 import { Image } from "astro:assets";
 import brandImg from "../images/brand.png";
 import toSlug from "../helpers/toSlug.mts";
+import debounce from "../helpers/debounce.mts";
 
 // NOTE: I'm not sure how get it in build time at this moment, probably i18n will be useful here
-const sections = {
-  "O nas": { gridRowStart: 4, gridRowEnd: 4 },
-  Projekty: { gridRowStart: 5, gridRowEnd: 5 },
-  Wsparcie: {
-    gridRowStart: 6,
-    gridRowEnd: 8,
-    display: "flex",
-    alignItems: "center",
-  },
-  Kontakt: { gridRowStart: 8, gridRowEnd: 8 },
-  "Wspieraj nas": { gridRowStart: 9, gridRowEnd: 9 },
-};
+const sections = ["O nas", "Projekty", "Wsparcie", "Kontakt", "Wspieraj nas"];
 ---
 
 <style>
@@ -47,8 +37,9 @@ const sections = {
     @apply indent--30px;
   }
 </style>
-<nav class="desktop-menu">
-  <div class="fixed top-0 translate-x--1/3 translate-y-1/2">
+
+<nav id="desktop-menu" class="hidden fixed top-0">
+  <div class="translate-x--1/3 translate-y-1/2">
     <div
       class="grid gap-10"
       style={{ gridTemplateColumns: "max-content max-content" }}
@@ -62,7 +53,7 @@ const sections = {
           class="h-full max-h-full grid grid-rows-12"
         >
           {
-            Object.keys(sections).map((section, index) => {
+            sections.map((section, index) => {
               return (
                 <div
                   class:list={[`element-${index}`]}
@@ -82,6 +73,8 @@ const sections = {
   </div>
 
   <script>
+    import debounce from "../helpers/debounce.mts";
+
     let currentRotate = -30;
     const MAX_ITEMS_IN_WHEEL = 5;
 
@@ -144,51 +137,88 @@ const sections = {
       }
     };
 
+    const desktopMenu = document.getElementById("desktop-menu");
     const navigationWheel = document.getElementById("navigation-wheel");
     const navigationWheelItems = document.getElementById(
       "navigation-wheel-items",
     );
-    if (!navigationWheel || !navigationWheelItems)
+    if (!navigationWheel || !navigationWheelItems || !desktopMenu)
       throw Error("Can't find wheel");
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach(async ({ isIntersecting, target }) => {
-          if (isIntersecting) {
-            const newItemSlug = target.getAttribute("data-section-slug") ?? "";
-            const newActiveIndex = parseInt(
-              document
-                .querySelector(`[data-wheel-item-slug='${newItemSlug}']`)
-                ?.getAttribute("data-wheel-item-index") ?? "",
-            );
+        debounce<(entries: IntersectionObserverEntry[]) => void>((entries) => {
+          let anyIntersect = false;
+          entries.forEach(({ isIntersecting, target }) => {
+            if (isIntersecting) {
+              anyIntersect = true;
+              const newItemSlug =
+                target.getAttribute("data-section-slug") ?? "";
+              const newActiveIndex = parseInt(
+                document
+                  .querySelector(`[data-wheel-item-slug='${newItemSlug}']`)
+                  ?.getAttribute("data-wheel-item-index") ?? "",
+              );
 
-            const currentActiveIndex = parseInt(
-              document
-                .querySelector(`.element-2`)
-                ?.getAttribute("data-wheel-item-index") ?? "",
-            );
+              const currentActiveIndex = parseInt(
+                document
+                  .querySelector(`.element-2`)
+                  ?.getAttribute("data-wheel-item-index") ?? "",
+              );
 
-            let nextRotate =
-              currentRotate + (currentActiveIndex > newActiveIndex ? 30 : -30);
-            const anim = navigationWheel.animate(
-              [
-                { transform: `rotate(${currentRotate}deg)` },
-                { transform: `rotate(${nextRotate}deg)` },
-              ],
-              {
-                duration: 450,
-                fill: "forwards",
-              },
-            );
+              let nextRotate =
+                currentRotate +
+                (currentActiveIndex > newActiveIndex ? 30 : -30);
+              const anim = navigationWheel.animate(
+                [
+                  { transform: `rotate(${currentRotate}deg)` },
+                  { transform: `rotate(${nextRotate}deg)` },
+                ],
+                {
+                  duration: 450,
+                  fill: "forwards",
+                },
+              );
 
-            await anim.finished;
-            currentRotate = nextRotate;
-            anim.commitStyles();
-            anim.cancel();
+              anim.finished.then(() => {
+                currentRotate = nextRotate;
+                anim.commitStyles();
+                anim.cancel();
 
-            setActiveItem(newActiveIndex, true);
+                setActiveItem(newActiveIndex, true);
+              });
+            }
+          });
+
+          if (anyIntersect) {
+            if (desktopMenu.classList.contains("hidden")) {
+              desktopMenu.classList.remove("hidden");
+              desktopMenu.animate(
+                [
+                  { transform: `translateX(-50%)` },
+                  { transform: `translateX(0)` },
+                ],
+                {
+                  duration: 450,
+                },
+              );
+            }
+          } else {
+            desktopMenu
+              .animate(
+                [
+                  { transform: `translateX(0)` },
+                  { transform: `translateX(-50%)` },
+                ],
+                {
+                  duration: 450,
+                },
+              )
+              .finished.then(() => {
+                desktopMenu.classList.add("hidden");
+              });
           }
-        });
+        }, 150)(entries);
       },
       {
         rootMargin: "-50% 0% -50% 0%",
