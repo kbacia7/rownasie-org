@@ -16,8 +16,10 @@ import Project from "../components/Project.astro";
 import ProjectsGrid from "../components/ProjectsGrid.astro";
 import splitIntoChunks from "../helpers/splitIntoChunks.mts";
 import Navigation from "../components/Navigation.astro";
+import MobileNavigation from "../components/MobileNavigation.astro";
 
 import "./index.css";
+import Modal from "../components/Modal.astro";
 
 const aboutUsCollection = await getCollection("about-us");
 const { Content: AssociationContent } =
@@ -95,15 +97,34 @@ const SupportUsContent = (await supportUsContent.render()).Content;
 
 <Layout title="Welcome to Astro.">
   <header class="w-full h-full min-h-xl md:min-h-5xl bg-primary grid">
-    <LanguageSwitch />
+    <div class="m-5">
+      <div class="float-left">
+        <LanguageSwitch />
+      </div>
+      <Modal toggleButtonClasses="float-right w-60px text-white md:hidden">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 -960 960 960"
+          slot="toggle-button-icon"
+          ><path
+            fill="currentcolor"
+            d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
+          ></path></svg
+        >
+
+        <Navigation
+          id="mobile-menu"
+          classes="absolute top-0 left-0 h-full w-full"
+        />
+      </Modal>
+    </div>
+
     <div
       class="pt-2 flex flex-col text-center justify-beetwen h-full items-center text-white"
     >
       <Logo />
       <h1 class="font-bold mt-5">To z fabryk wychodzą rewolucje!</h1>
     </div>
-
-    <!-- TODO: Arror down here -->
   </header>
   <div class="relative">
     <svg viewBox="0 0 375 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -134,7 +155,7 @@ const SupportUsContent = (await supportUsContent.render()).Content;
     />
   </div>
 
-  <Navigation />
+  <Navigation classes="hidden top-0 fixed" id="desktop-menu" autoHide />
   <Section title="O nas">
     <Tabs
       list={[
