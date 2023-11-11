@@ -1,0 +1,50 @@
+---
+interface Props {
+  toggleButtonClasses: string;
+}
+
+const { toggleButtonClasses } = Astro.props;
+const dialogId = crypto.randomUUID();
+---
+
+<button
+  class:list={[toggleButtonClasses, "dialog-toggle-button"]}
+  data-dialog-id={dialogId}
+>
+  <slot name="toggle-button-icon" />
+</button>
+
+<dialog
+  id={dialogId}
+  class="absolute bg-dark w-full h-full backdrop:margin-0 margin-0"
+>
+  <button class="text-white absolute w-50px right-2 z-3">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
+      ><path
+        fill="currentcolor"
+        d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+      ></path></svg
+    >
+  </button>
+
+  <div>
+    <slot />
+  </div>
+</dialog>
+
+<script>
+  document.querySelectorAll(".dialog-toggle-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const dialogId = button.getAttribute("data-dialog-id");
+      if (!dialogId) return;
+
+      (document.getElementById(dialogId) as HTMLDialogElement).showModal();
+    });
+  });
+
+  document.querySelectorAll("dialog > button").forEach((button) => {
+    button.addEventListener("click", () => {
+      (button.parentElement as HTMLDialogElement).close();
+    });
+  });
+</script>
