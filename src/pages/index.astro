@@ -16,7 +16,6 @@ import Project from "../components/Project.astro";
 import ProjectsGrid from "../components/ProjectsGrid.astro";
 import splitIntoChunks from "../helpers/splitIntoChunks.mts";
 import Navigation from "../components/Navigation.astro";
-import MobileNavigation from "../components/MobileNavigation.astro";
 
 import "./index.css";
 import Modal from "../components/Modal.astro";
@@ -155,7 +154,9 @@ const SupportUsContent = (await supportUsContent.render()).Content;
     />
   </div>
 
-  <Navigation classes="hidden top-0 fixed" id="desktop-menu" autoHide />
+  <div class="hidden md:block">
+    <Navigation classes="hidden top-0 fixed" id="desktop-menu" autoHide />
+  </div>
   <Section title="O nas">
     <Tabs
       list={[

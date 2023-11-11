@@ -189,8 +189,10 @@ const { id, classes, autoHide } = Astro.props;
 
                   anim.finished.then(() => {
                     currentRotate = nextRotate;
-                    anim.commitStyles();
-                    anim.cancel();
+                    if (navigationWheel.getBoundingClientRect().width) {
+                      anim.commitStyles();
+                      anim.cancel();
+                    }
 
                     setActiveItem(newActiveIndex, true);
                   });
