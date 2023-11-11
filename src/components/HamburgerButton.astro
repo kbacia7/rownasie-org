@@ -1,0 +1,17 @@
+---
+import { string } from "astro/zod";
+interface Props {
+  classes: string;
+}
+
+const { classes } = Astro.props;
+---
+
+<div
+  class:list={[
+    "btn btn-primary w-70px rounded-full fixed right-5 bottom-5 z-10",
+    classes,
+  ]}
+>
+  <slot />
+</div>
