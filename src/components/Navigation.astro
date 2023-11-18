@@ -70,7 +70,7 @@ const sections = Object.values(t("section_titles"));
                   data-wheel-item-slug={toSlug(section)}
                 >
                   <span class="text-lg text-white md:text-3xl md:text-#a6a6a6">
-                    <a href="#">{section}</a>
+                    <a href={`#${toSlug(section)}`}>{section}</a>
                   </span>
                 </div>
               );
