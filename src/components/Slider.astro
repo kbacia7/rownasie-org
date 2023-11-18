@@ -1,7 +1,16 @@
 ---
 import { Image } from "astro:assets";
+import { useTranslation } from "../i18n/useTranslation";
+import arrow from "../images/move_down.png";
 
-import arrowDown from "../images/move_down.png";
+import type { Language } from "../i18n/languages";
+
+interface Props {
+  language: Language;
+}
+
+const { language } = Astro.props;
+const t = useTranslation(language);
 ---
 
 <div class="slider">
@@ -14,8 +23,8 @@ import arrowDown from "../images/move_down.png";
   <div class="flex justify-center">
     <button class="slider-nav-prev hidden">
       <Image
-        src={arrowDown}
-        alt="Right"
+        src={arrow}
+        alt={t("images_alt.slider_arrow_left")}
         width={30}
         height={30}
         class="rotate-90"
@@ -23,8 +32,8 @@ import arrowDown from "../images/move_down.png";
     </button>
     <button class="slider-nav-next">
       <Image
-        src={arrowDown}
-        alt="Right"
+        src={arrow}
+        alt={t("images_alt.slider_arrow_right")}
         width={30}
         height={30}
         class="-rotate-90"

@@ -2,17 +2,19 @@
 import { Image } from "astro:assets";
 import brandImg from "../images/brand.png";
 import toSlug from "../helpers/toSlug.mts";
-import debounce from "../helpers/debounce.mts";
+import { useTranslation } from "../i18n/useTranslation";
+import type { Language } from "../i18n/languages";
 
 interface Props {
   id: string;
   classes: string;
   autoHide?: boolean;
+  language: Language;
 }
 
-// NOTE: I'm not sure how get it in build time at this moment, probably i18n will be useful here
-const sections = ["O nas", "Projekty", "Wsparcie", "Kontakt", "Wspieraj nas"];
-const { id, classes, autoHide } = Astro.props;
+const { id, classes, autoHide, language } = Astro.props;
+const t = useTranslation(language);
+const sections = Object.values(t("section_titles"));
 ---
 
 <style>
@@ -48,7 +50,11 @@ const { id, classes, autoHide } = Astro.props;
       style={{ gridTemplateColumns: "max-content max-content" }}
     >
       <div class="w-300px md:w-500px">
-        <Image class="navigation-wheel" src={brandImg} alt="brand" />
+        <Image
+          class="navigation-wheel"
+          src={brandImg}
+          alt={t("images_alt.brand")}
+        />
       </div>
       <div>
         <div

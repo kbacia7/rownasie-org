@@ -1,8 +1,23 @@
 ---
 import { Image } from "astro:assets";
-import logo from "../images/logo-pl_PL.png";
+import logoPl from "../images/logo-pl_PL.png";
+import logoEn from "../images/logo-en_US.png";
+
+import { useTranslation } from "../i18n/useTranslation";
+import { Languages } from "../i18n/languages";
+import { type Language } from "../i18n/languages";
+
+interface Props {
+  language: Language;
+}
+
+const { language } = Astro.props;
+const t = useTranslation(language);
 ---
 
 <div class="w-full px-3 max-w-600px md:w-1/3 md:px-0">
-  <Image src={logo} alt="Logo" />
+  <Image
+    src={language === Languages.PL ? logoPl : logoEn}
+    alt={t("images_alt.logo")}
+  />
 </div>

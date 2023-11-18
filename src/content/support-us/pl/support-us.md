@@ -1,5 +1,5 @@
 ---
-layout: ../../layouts/DefaultTextLayout.astro
+layout: ../../../layouts/DefaultTextLayout.astro
 donateLink: "https://zrzutka.pl/z9cbwy/wplac"
 ---
 

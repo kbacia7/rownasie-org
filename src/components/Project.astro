@@ -1,9 +1,14 @@
 ---
+import { useTranslation } from "../i18n/useTranslation";
+import type { Language } from "../i18n/languages";
+
 interface Props {
   name: string;
+  language: Language;
 }
 
-const { name } = Astro.props;
+const { name, language } = Astro.props;
+const t = useTranslation(language);
 ---
 
 <div class="flex flex-row items-center justify-around">
@@ -13,5 +18,5 @@ const { name } = Astro.props;
       <slot />
     </p>
   </div>
-  <button class="btn btn-secondary">Więcej</button>
+  <button class="btn btn-secondary">{t("projects.button")}</button>
 </div>

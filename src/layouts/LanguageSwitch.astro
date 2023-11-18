@@ -2,11 +2,31 @@
 import { Image } from "astro:assets";
 import pl from "../images/pl_icon.png";
 import en from "../images/en_icon.png";
+
+import { useTranslation } from "../i18n/useTranslation";
+import { Languages } from "../i18n/languages";
+import type { Language } from "../i18n/languages";
+
+interface Props {
+  language: Language;
+}
+
+const { language } = Astro.props;
+const t = useTranslation(language);
 ---
 
 <button>
-  <Image width="60" class="mr-5" src={en} alt="Zmiana języka na angielski" />
+  <a href=`/${Languages.EN}`>
+    <Image
+      width="60"
+      class="mr-5"
+      src={en}
+      alt={t("images_alt.language_switch_to_en")}
+    />
+  </a>
 </button>
 <button>
-  <Image width="60" src={pl} alt="Zmiana języka na polski" />
+  <a href="/">
+    <Image width="60" src={pl} alt={t("images_alt.language_switch_to_pl")} />
+  </a>
 </button>
