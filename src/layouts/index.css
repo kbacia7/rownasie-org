@@ -21,3 +21,15 @@ h3 {
 h4 {
   @apply lg:text-3xl text-2xl
 }
+
+section p a {
+  @apply text-secondary-800 underline
+}
+
+section p a:visited {
+  @apply text-secondary-900
+}
+
+section p a:hover {
+  @apply text-secondary-700
+}
