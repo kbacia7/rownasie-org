@@ -32,7 +32,6 @@ const { lang } = Astro.props;
 const t = useTranslation(lang);
 
 const aboutUsCollection = await getCollection("about-us");
-console.log("a", aboutUsCollection);
 const { Content: AssociationContent } =
   (await aboutUsCollection
     .find(({ slug }) => slug === `${lang}/association`)
@@ -279,23 +278,34 @@ const SupportUsContent = (await supportUsContent.render()).Content;
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-0">
       <div class="col-span-1 md:col-span-1">
         <h3 class="font-bold">{t("contact.office")}:</h3>
-        {/* NOTE: Uhuhuhu, XSS risky */}
-        <p class="mt-3" set:html={associationInfo.data.address} />
+        <p class="mt-3">
+          <a href={associationInfo.data.addressLink}>
+            {associationInfo.data.addressPartOne}
+            <br />
+            {associationInfo.data.addressPartTwo}
+          </a>
+        </p>
       </div>
       <div class="col-span-1 md:col-span-2">
         <p class="mb-3">
           <span>
             <span class="font-bold mr-1">{t("contact.questions")}:</span>
-            {associationInfo.data.emailQuestions}
+            <a href=`mailto:${associationInfo.data.emailQuestions}`>
+              {associationInfo.data.emailQuestions}
+            </a>
           </span>
         </p>
         <p class="col-span-1 md:col-span-2 mb-3">
           <span class="font-bold mr-1">{t("contact.support")}:</span>
-          {associationInfo.data.emailHelp}
+          <a href=`mailto:${associationInfo.data.emailHelp}`>
+            {associationInfo.data.emailHelp}
+          </a>
         </p>
         <p class="mb-3">
           <span class="font-bold mr-1">{t("contact.rodo")}:</span>
-          {associationInfo.data.emailRodo}
+          <a href=`mailto:${associationInfo.data.emailRodo}`
+            >{associationInfo.data.emailRodo}
+          </a>
         </p>
         <p class="mb-3">
           <span class="font-bold mr-1">{t("contact.phone")}:</span>
@@ -335,7 +345,11 @@ const SupportUsContent = (await supportUsContent.render()).Content;
         <div>
           <div class="my-6 md:mt-0">
             <p class="text-lg font-bold">{t("footer.association")}</p>
-            <p set:html={associationInfo.data.address} />
+            <p>
+              {associationInfo.data.addressPartOne}
+              <br />
+              {associationInfo.data.addressPartTwo}
+            </p>
           </div>
           <div>
             <p>NIP: {associationInfo.data.nip}</p>

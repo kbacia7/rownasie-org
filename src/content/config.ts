@@ -44,7 +44,9 @@ const associationInfoCollection = defineCollection({
   type: "data",
   schema: () =>
     z.object({
-      address: z.string(),
+      addressPartOne: z.string(),
+      addressPartTwo: z.string(),
+      addressLink: z.string(),
       emailQuestions: z.string(),
       emailHelp: z.string(),
       emailRodo: z.string(),
