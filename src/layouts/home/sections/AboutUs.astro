@@ -1,0 +1,111 @@
+---
+import { getCollection } from "astro:content";
+
+import Section from "../../Section.astro";
+import Tabs from "../../../components/Tabs.astro";
+import TabItem from "../../../components/TabItem.astro";
+import { useTranslation } from "../../../i18n/useTranslation";
+import type { Language } from "../../../i18n/languages";
+import PersonDescription from "../../../components/PersonDescription.astro";
+import Slider from "../../../components/Slider.astro";
+
+interface Props {
+  language: Language;
+}
+
+const { language } = Astro.props;
+
+const t = useTranslation(language);
+const aboutUsCollection = await getCollection("about-us");
+const { Content } =
+  (await aboutUsCollection
+    .find(({ slug }) => slug === `${language}/association`)
+    ?.render()) ?? {};
+
+const boardMembersCollection = await getCollection("board");
+const boardsContent = await Promise.all(
+  boardMembersCollection
+    .filter(({ slug }) => slug.startsWith(language))
+    .map(async (entry) => {
+      return {
+        ...entry,
+        Content: (await entry.render()).Content,
+      };
+    }),
+);
+
+const auditCommitteeCollection = await getCollection("audit-committee");
+const auditCommitteeContent = await Promise.all(
+  auditCommitteeCollection
+    .filter(({ slug }) => slug.startsWith(language))
+    .map(async (entry) => {
+      return {
+        ...entry,
+        Content: (await entry.render()).Content,
+      };
+    }),
+);
+
+if (!Content) throw new Error("Association content is missing");
+---
+
+<Section title={t("section_titles.about_us")}>
+  <Tabs
+    list={[
+      {
+        tab: t("categories.association"),
+        id: "association",
+      },
+      {
+        tab: t("categories.board"),
+        id: "board",
+      },
+      {
+        tab: t("categories.audit_committee"),
+        id: "audit_committee",
+      },
+    ]}
+  >
+    <TabItem id="association">
+      <Content />
+    </TabItem>
+
+    <TabItem id="board">
+      <Slider language={language}>
+        {
+          boardsContent.map((entry) => (
+            <div id={entry.slug}>
+              <PersonDescription
+                name={entry.data.name}
+                photo={entry.data.photo}
+                title={entry.data.title}
+                language={language}
+              >
+                <entry.Content />
+              </PersonDescription>
+            </div>
+          ))
+        }
+      </Slider>
+    </TabItem>
+
+    <TabItem id="audit_committee">
+      <Slider language={language}>
+        {
+          auditCommitteeContent.map((entry) => (
+            <div id={entry.slug}>
+              <PersonDescription
+                name={entry.data.name}
+                photo={entry.data.photo}
+                title={entry.data.title}
+                language={language}
+              >
+                <entry.Content />
+              </PersonDescription>
+            </div>
+          ))
+        }
+      </Slider>
+    </TabItem>
+  </Tabs>
+</Section>

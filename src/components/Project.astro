@@ -17,13 +17,13 @@ const t = useTranslation(language);
 <div class="flex flex-row items-center justify-around">
   <div>
     <h3 class="font-bold mb-3">{name}</h3>
-    <p>
+    <p class="m-0">
       <slot />
     </p>
   </div>
-  <button class="btn btn-primary">
-    <a href={href}>
+  <a href={href}>
+    <button class="btn btn-primary">
       {t("projects.button")}
-    </a>
-  </button>
+    </button>
+  </a>
 </div>

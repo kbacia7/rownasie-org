@@ -1,0 +1,72 @@
+---
+import Layout from "../Layout.astro";
+import Navigation from "../../components/Navigation.astro";
+import { useTranslation } from "../../i18n/useTranslation";
+import Modal from "../../components/Modal.astro";
+import HamburgerButton from "../../components/HamburgerButton.astro";
+import LanguageSwitch from "../../components/LanguageSwitch.astro";
+
+import { type Language } from "../../i18n/languages";
+
+import "../index.css";
+import Footer from "../Footer.astro";
+import Header from "../Header.astro";
+import AboutUs from "./sections/AboutUs.astro";
+import Projects from "./sections/Projects.astro";
+import Support from "./sections/Support.astro";
+import Contact from "./sections/Contact.astro";
+import SupportUs from "./sections/SupportUs.astro";
+import Documents from "./sections/Documents.astro";
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const t = useTranslation(lang);
+---
+
+<Layout title={t("meta.title")}>
+  <Header language={lang} classes="md:min-h-5xl">
+    <div class="float-left" slot="toolbar">
+      <LanguageSwitch language={lang} />
+    </div>
+  </Header>
+
+  <div class="hidden md:block">
+    <Navigation
+      classes="hidden top-0 fixed"
+      id="desktop-menu"
+      language={lang}
+      autoHide
+    />
+  </div>
+
+  <HamburgerButton classes="md:hidden">
+    <Modal toggleButtonClasses="w-full">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 -960 960 960"
+        slot="toggle-button-icon"
+        ><path
+          fill="currentcolor"
+          d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
+        ></path></svg
+      >
+
+      <Navigation
+        id="mobile-menu"
+        classes="absolute top-0 left-0 h-full w-full"
+        language={lang}
+      />
+    </Modal>
+  </HamburgerButton>
+
+  <AboutUs language={lang} />
+  <Projects language={lang} />
+  <Support language={lang} />
+  <Contact language={lang} />
+  <SupportUs language={lang} />
+  <Documents language={lang} />
+  <Footer language={lang} />
+</Layout>

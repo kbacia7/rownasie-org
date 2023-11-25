@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+
+import Section from "../../Section.astro";
+import Tabs from "../../../components/Tabs.astro";
+import TabItem from "../../../components/TabItem.astro";
+import { useTranslation } from "../../../i18n/useTranslation";
+import type { Language } from "../../../i18n/languages";
+
+interface Props {
+  language: Language;
+}
+
+const { language } = Astro.props;
+
+const t = useTranslation(language);
+const supportCollection = await getCollection("support");
+const supportContent = await Promise.all(
+  supportCollection
+    .filter(({ slug }) => slug.startsWith(language))
+    .map(async (entry) => {
+      return {
+        ...entry,
+        Content: (await entry.render()).Content,
+      };
+    }),
+);
+---
+
+<Section title={t("section_titles.support")}>
+  <Tabs
+    list={supportContent.map(({ data: { name }, slug }) => ({
+      tab: name,
+      id: slug,
+    }))}
+  >
+    {
+      supportContent.map((entry) => (
+        <TabItem id={entry.slug}>
+          <entry.Content />
+        </TabItem>
+      ))
+    }
+  </Tabs>
+</Section>

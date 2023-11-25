@@ -1,0 +1,80 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+
+import { useTranslation } from "../i18n/useTranslation";
+
+import fbIcon from "../images/fb.png";
+import igIcon from "../images/ig.png";
+
+import type { Language } from "../i18n/languages";
+
+interface Props {
+  language: Language;
+}
+
+const { language } = Astro.props;
+
+const t = useTranslation(language);
+const associationInfoCollection = await getCollection("association-info");
+const associationInfo = associationInfoCollection.find(
+  ({ id }) => id === `${language}/main`,
+);
+
+if (!associationInfo) throw new Error("Association info is missing");
+---
+
+<footer class="clear-both w-full">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 34.5">
+    <path
+      style=" stroke:none;fill-rule:nonzero;fill:rgb(46.669006%,38.819885%,56.858826%);fill-opacity:1;"
+      d="M 332.3984 7.0711 C 306.1484 2.2742 279.5234 -1.6984 252.75 0.5516 C 226.875 2.7234 203.0234 15.2469 177 16.1453 C 150.6016 17.0438 124.125 12.3953 98.5508 6.4734 C 55.5781 -3.425 21.5273 8.7234 0.0039 21.243 L 0.0039 34.7 L 374.9961 34.7 L 374.9961 15.9188 C 360.9727 12.2469 346.4961 9.6219 332.3984 7.0711 Z M 332.3984 7.0711"
+    ></path>
+  </svg>
+  <div class="bg-primary px-2 lg:px-20">
+    <div class="flex justify-between flex-col md:flex-row">
+      <div>
+        <div class="my-6 md:mt-0">
+          <p class="text-lg font-bold">{t("footer.association")}</p>
+          <p>
+            {associationInfo.data.addressPartOne}
+            <br />
+            {associationInfo.data.addressPartTwo}
+          </p>
+        </div>
+        <div>
+          <p>NIP: {associationInfo.data.nip}</p>
+          <p>KRS: {associationInfo.data.krs}</p>
+        </div>
+      </div>
+      <div>
+        <div class="my-6 md:mt-0">
+          <p class="font-bold">{t("footer.bank_acc")}:</p>
+          <p set:html={associationInfo.data.bankAccount} />
+        </div>
+      </div>
+    </div>
+    <div class="py-5 md:pt-20 border-b border-b-black">
+      <a href={associationInfo.data.fbLink} rel="noopener" target="_blank">
+        <Image
+          class="mr-5 inline"
+          src={fbIcon}
+          width="50"
+          height="50"
+          alt={t("images_alt.facebook_icon")}
+        />
+      </a>
+
+      <a href={associationInfo.data.igLink} rel="noopener" target="_blank">
+        <Image
+          class="inline"
+          src={igIcon}
+          width="50"
+          height="50"
+          alt={t("images_alt.instagram_icon")}
+        />
+      </a>
+    </div>
+    <p>© {new Date().getFullYear()}{" "}{t("footer.association")}</p>
+  </div>
+</footer>

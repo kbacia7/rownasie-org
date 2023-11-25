@@ -1,0 +1,55 @@
+---
+import { getCollection } from "astro:content";
+
+import Section from "../../Section.astro";
+import { useTranslation } from "../../../i18n/useTranslation";
+import Project from "../../../components/Project.astro";
+import ProjectsGrid from "../../../components/ProjectsGrid.astro";
+import Slider from "../../../components/Slider.astro";
+import splitIntoChunks from "../../../helpers/splitIntoChunks.mts";
+import { type Language } from "../../../i18n/languages";
+
+interface Props {
+  language: Language;
+}
+
+const { language } = Astro.props;
+
+const t = useTranslation(language);
+
+const documentsCollection = await getCollection("documents");
+const documentsContentChunks = splitIntoChunks(
+  await Promise.all(
+    documentsCollection
+      .filter(({ id }) => id.startsWith(language))
+      .map(async (entry) => {
+        return {
+          ...entry,
+        };
+      }),
+  ),
+  4,
+);
+---
+
+<Section title={t("section_titles.documents")}>
+  <Slider language={language}>
+    {
+      documentsContentChunks.map((chunk) => {
+        return (
+          <ProjectsGrid>
+            {chunk.map((entry) => (
+              <Project
+                href={`/documents/${entry.data.filename}`}
+                language={language}
+                name={entry.data.name}
+              >
+                {entry.data.description}
+              </Project>
+            ))}
+          </ProjectsGrid>
+        );
+      })
+    }
+  </Slider>
+</Section>

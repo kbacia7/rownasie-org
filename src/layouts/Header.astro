@@ -1,0 +1,60 @@
+---
+import Logo from "../components/Logo.astro";
+import arrowDown from "../images/move_down.png";
+import { Image } from "astro:assets";
+import { useTranslation } from "../i18n/useTranslation";
+import type { Language } from "../i18n/languages";
+
+interface Props {
+  language: Language;
+  classes?: string;
+}
+
+const { language, classes } = Astro.props;
+const t = useTranslation(language);
+---
+
+<header class="w-full h-full">
+  <div class:list={["bg-primary grid min-h-xl", classes]}>
+    <div class="m-5">
+      <slot name="toolbar" />
+    </div>
+
+    <div
+      class="pt-2 flex flex-col text-center justify-beetwen h-full items-center text-white"
+    >
+      <Logo language={language} />
+      <h1 class="font-bold mt-5">{t("header.motto")}</h1>
+    </div>
+  </div>
+
+  <div class="relative">
+    <svg viewBox="0 0 375 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect y="19" width="375" height="67" fill="url(#paint0_linear_1_2)"
+      ></rect>
+      <path
+        d="M42.6016 35.6211C68.8516 40.4219 95.4766 44.3945 122.25 42.1445C148.125 39.9727 171.977 27.4492 198 26.5508C224.398 25.6484 250.875 30.2969 276.449 36.2227C319.422 46.1211 353.473 33.9727 374.996 21.4492V0H0.00390625V26.7734C14.0273 30.4492 28.5039 33.0742 42.6016 35.6211Z"
+        fill="#776391"></path>
+      <defs>
+        <linearGradient
+          id="paint0_linear_1_2"
+          x1="187.5"
+          y1="19"
+          x2="187.5"
+          y2="86"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-opacity="0.4"></stop>
+          <stop offset="0.703125" stop-opacity="0.08"></stop>
+          <stop offset="1" stop-opacity="0"></stop>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <Image
+      class="absolute top-0 w-20% md:w-90px md:top-15 left-1/2 -translate-x-1/2"
+      src={arrowDown}
+      alt={t("images_alt.arrow_down")}
+    />
+  </div>
+</header>
