@@ -20,9 +20,10 @@ import { useTranslation } from "../i18n/useTranslation";
 import Modal from "../components/Modal.astro";
 import HamburgerButton from "../components/HamburgerButton.astro";
 
-import type { Language } from "../i18n/languages";
+import { Languages, type Language } from "../i18n/languages";
 
 import "./index.css";
+import toSlug from "../helpers/toSlug.mts";
 
 interface Props {
   lang: Language;
@@ -71,6 +72,20 @@ const projectsContentChunks = splitIntoChunks(
         return {
           ...entry,
           Content: (await entry.render()).Content,
+        };
+      }),
+  ),
+  4,
+);
+
+const documentsCollection = await getCollection("documents");
+const documentsContentChunks = splitIntoChunks(
+  await Promise.all(
+    documentsCollection
+      .filter(({ id }) => id.startsWith(lang))
+      .map(async (entry) => {
+        return {
+          ...entry,
         };
       }),
   ),
@@ -246,7 +261,13 @@ const SupportUsContent = (await supportUsContent.render()).Content;
           return (
             <ProjectsGrid>
               {chunk.map((entry) => (
-                <Project language={lang} name={entry.data.name}>
+                <Project
+                  href={`/${lang !== Languages.PL ? `${lang}/` : ""}${toSlug(
+                    entry.data.name,
+                  )}`}
+                  language={lang}
+                  name={entry.data.name}
+                >
                   {entry.data.description}
                 </Project>
               ))}
@@ -331,6 +352,28 @@ const SupportUsContent = (await supportUsContent.render()).Content;
         >{t("support_us.button")}</button
       >
     </a>
+  </Section>
+
+  <Section title={t("section_titles.documents")}>
+    <Slider language={lang}>
+      {
+        documentsContentChunks.map((chunk) => {
+          return (
+            <ProjectsGrid>
+              {chunk.map((entry) => (
+                <Project
+                  href={`/documents/${entry.data.filename}`}
+                  language={lang}
+                  name={entry.data.name}
+                >
+                  {entry.data.description}
+                </Project>
+              ))}
+            </ProjectsGrid>
+          );
+        })
+      }
+    </Slider>
   </Section>
 
   <footer class="clear-both w-full">

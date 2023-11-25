@@ -85,7 +85,7 @@ const sections = Object.values(t("section_titles"));
     import debounce from "../helpers/debounce.mts";
 
     let currentRotate = -30;
-    const MAX_ITEMS_IN_WHEEL = 5;
+    const MAX_ITEMS_IN_WHEEL = 6; //TODO: This should be automatic...
 
     const setActiveItem = (index: number, withoutAnim: boolean) => {
       const newActive = document.querySelector(
@@ -134,10 +134,12 @@ const sections = Object.values(t("section_titles"));
 
           el.classList.toggle(`element-${elementNumberClass}`);
           el.classList.toggle(`element-${nextElNumberClass}`);
+
           if (
-            (elItemIndex > newActiveItemIndex && 2 > nextElNumberClass) ||
+            elItemIndex - 2 > newActiveItemIndex ||
             (newActiveItemIndex > elItemIndex && nextElNumberClass > 2)
           ) {
+            console.log("lol?", el);
             el.classList.add("hidden");
           } else {
             el.classList.remove("hidden");

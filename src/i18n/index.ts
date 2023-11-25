@@ -32,6 +32,7 @@ export default {
       support: "Wsparcie",
       contact: "Kontakt",
       support_us: "Wspieraj nas",
+      documents: "Dokumenty",
     },
     contact: {
       office: "Biuro",
@@ -84,6 +85,7 @@ export default {
       support: "Support",
       contact: "Contact",
       support_us: "Support us",
+      documents: "Documents",
     },
     contact: {
       office: "Office",

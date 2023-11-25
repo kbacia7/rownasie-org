@@ -33,6 +33,16 @@ const projectsCollection = defineCollection({
     }),
 });
 
+const documentsCollection = defineCollection({
+  type: "data",
+  schema: () =>
+    z.object({
+      name: z.string(),
+      description: z.string(),
+      filename: z.string(),
+    }),
+});
+
 const supportCollection = defineCollection({
   type: "content",
   schema: () =>
@@ -73,6 +83,7 @@ export const collections = {
   board: boardCollection,
   "audit-committee": auditCommitteeCollection,
   projects: projectsCollection,
+  documents: documentsCollection,
   support: supportCollection,
   "association-info": associationInfoCollection,
   "support-us": supportUsCollection,

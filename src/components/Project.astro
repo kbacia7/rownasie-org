@@ -6,10 +6,11 @@ import toSlug from "../helpers/toSlug.mts";
 
 interface Props {
   name: string;
+  href: string;
   language: Language;
 }
 
-const { name, language } = Astro.props;
+const { name, href, language } = Astro.props;
 const t = useTranslation(language);
 ---
 
@@ -21,11 +22,7 @@ const t = useTranslation(language);
     </p>
   </div>
   <button class="btn btn-primary">
-    <a
-      href={`/${language !== Languages.PL ? `${language}/` : ""}${toSlug(
-        name,
-      )}`}
-    >
+    <a href={href}>
       {t("projects.button")}
     </a>
   </button>
