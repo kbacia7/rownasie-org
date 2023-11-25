@@ -1,7 +1,7 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Section from "../layouts/Section.astro";
-import LanguageSwitch from "../layouts/LanguageSwitch.astro";
+import Layout from "./Layout.astro";
+import Section from "./Section.astro";
+import LanguageSwitch from "./LanguageSwitch.astro";
 import Logo from "../components/Logo.astro";
 import arrowDown from "../images/move_down.png";
 import fbIcon from "../images/fb.png";
@@ -427,17 +427,7 @@ const SupportUsContent = (await supportUsContent.render()).Content;
           />
         </a>
       </div>
-      <div class="flex flex-col md:flex-row justify-between">
-        <div>
-          <p class="font-bold underline">
-            <a href="#">{t("footer.statue")}</a>
-          </p>
-          <p class="font-bold underline">
-            <a href="#">{t("footer.privacy_police")}</a>
-          </p>
-        </div>
-        <p>© {new Date().getFullYear()}{" "}{t("footer.association")}</p>
-      </div>
+      <p>© {new Date().getFullYear()}{" "}{t("footer.association")}</p>
     </div>
   </footer>
 </Layout>
