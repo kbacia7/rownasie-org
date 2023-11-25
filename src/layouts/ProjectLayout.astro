@@ -1,0 +1,154 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Section from "../layouts/Section.astro";
+import Logo from "../components/Logo.astro";
+import arrowDown from "../images/move_down.png";
+import fbIcon from "../images/fb.png";
+import igIcon from "../images/ig.png";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import { useTranslation } from "../i18n/useTranslation";
+
+import "./index.css";
+
+const { frontmatter, file } = Astro.props;
+const lang = file.split("/").at(-2);
+const t = useTranslation(lang);
+
+const associationInfoCollection = await getCollection("association-info");
+const associationInfo = associationInfoCollection.find(
+  ({ id }) => id === `${lang}/main`,
+);
+
+if (!associationInfo) throw new Error("Association info is missing");
+---
+
+<style is:global>
+  p {
+    @apply mb-5;
+  }
+</style>
+<Layout title={t("meta.title")}>
+  <header class="w-full h-full min-h-md bg-primary grid text-white">
+    <div class="m-5">
+      <a href="/" class="flex items-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="50"
+          viewBox="0 -960 960 960"
+          width="50"
+          ><path
+            d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z"
+            fill="currentcolor"></path></svg
+        >
+        <p class="m-0 ml-5 font-bold">{t("header.back")}</p>
+      </a>
+    </div>
+
+    <div
+      class="pt-2 flex flex-col text-center justify-beetwen h-full items-center"
+    >
+      <Logo language={lang} />
+      <h1 class="font-bold mt-5">{t("header.motto")}</h1>
+    </div>
+  </header>
+  <div class="relative">
+    <svg viewBox="0 0 375 86" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect y="19" width="375" height="67" fill="url(#paint0_linear_1_2)"
+      ></rect>
+      <path
+        d="M42.6016 35.6211C68.8516 40.4219 95.4766 44.3945 122.25 42.1445C148.125 39.9727 171.977 27.4492 198 26.5508C224.398 25.6484 250.875 30.2969 276.449 36.2227C319.422 46.1211 353.473 33.9727 374.996 21.4492V0H0.00390625V26.7734C14.0273 30.4492 28.5039 33.0742 42.6016 35.6211Z"
+        fill="#776391"></path>
+      <defs>
+        <linearGradient
+          id="paint0_linear_1_2"
+          x1="187.5"
+          y1="19"
+          x2="187.5"
+          y2="86"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-opacity="0.4"></stop>
+          <stop offset="0.703125" stop-opacity="0.08"></stop>
+          <stop offset="1" stop-opacity="0"></stop>
+        </linearGradient>
+      </defs>
+    </svg>
+    <Image
+      class="absolute top-0 w-20% md:w-90px md:top-15 left-1/2 -translate-x-1/2"
+      src={arrowDown}
+      alt={t("images_alt.arrow_down")}
+    />
+  </div>
+
+  <Section title={frontmatter.name} full>
+    <slot />
+  </Section>
+
+  <footer class="clear-both w-full">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 34.5">
+      <path
+        style=" stroke:none;fill-rule:nonzero;fill:rgb(46.669006%,38.819885%,56.858826%);fill-opacity:1;"
+        d="M 332.3984 7.0711 C 306.1484 2.2742 279.5234 -1.6984 252.75 0.5516 C 226.875 2.7234 203.0234 15.2469 177 16.1453 C 150.6016 17.0438 124.125 12.3953 98.5508 6.4734 C 55.5781 -3.425 21.5273 8.7234 0.0039 21.243 L 0.0039 34.7 L 374.9961 34.7 L 374.9961 15.9188 C 360.9727 12.2469 346.4961 9.6219 332.3984 7.0711 Z M 332.3984 7.0711"
+      ></path>
+    </svg>
+    <div class="bg-primary px-2 lg:px-20">
+      <div class="flex justify-between flex-col md:flex-row">
+        <div>
+          <div class="my-6 md:mt-0">
+            <p class="m-0 text-lg font-bold">{t("footer.association")}</p>
+            <p class="m-0">
+              {associationInfo.data.addressPartOne}
+              <br />
+              {associationInfo.data.addressPartTwo}
+            </p>
+          </div>
+          <div>
+            <p class="m-0">NIP: {associationInfo.data.nip}</p>
+            <p class="m-0">KRS: {associationInfo.data.krs}</p>
+          </div>
+        </div>
+        <div>
+          <div class="my-6 md:mt-0">
+            <p class="m-0 font-bold">{t("footer.bank_acc")}:</p>
+            <p class="m-0" set:html={associationInfo.data.bankAccount} />
+          </div>
+        </div>
+      </div>
+      <div class="py-5 md:pt-20 border-b border-b-black">
+        <a href={associationInfo.data.fbLink} rel="noopener" target="_blank">
+          <Image
+            class="mr-5 inline"
+            src={fbIcon}
+            width="50"
+            height="50"
+            alt={t("images_alt.facebook_icon")}
+          />
+        </a>
+
+        <a href={associationInfo.data.igLink} rel="noopener" target="_blank">
+          <Image
+            class="inline"
+            src={igIcon}
+            width="50"
+            height="50"
+            alt={t("images_alt.instagram_icon")}
+          />
+        </a>
+      </div>
+      <div class="flex flex-col md:flex-row justify-between">
+        <div>
+          <p class="m-0 font-bold underline">
+            <a href="#">{t("footer.statue")}</a>
+          </p>
+          <p class="m-0 font-bold underline">
+            <a href="#">{t("footer.privacy_police")}</a>
+          </p>
+        </div>
+        <p class="m-0">
+          © {new Date().getFullYear()}{" "}{t("footer.association")}
+        </p>
+      </div>
+    </div>
+  </footer>
+</Layout>

@@ -1,6 +1,8 @@
 ---
 import { useTranslation } from "../i18n/useTranslation";
+import { Languages } from "../i18n/languages";
 import type { Language } from "../i18n/languages";
+import toSlug from "../helpers/toSlug.mts";
 
 interface Props {
   name: string;
@@ -18,5 +20,13 @@ const t = useTranslation(language);
       <slot />
     </p>
   </div>
-  <button class="btn btn-primary">{t("projects.button")}</button>
+  <button class="btn btn-primary">
+    <a
+      href={`/${language !== Languages.PL ? `${language}/` : ""}${toSlug(
+        name,
+      )}`}
+    >
+      {t("projects.button")}
+    </a>
+  </button>
 </div>

@@ -247,7 +247,7 @@ const SupportUsContent = (await supportUsContent.render()).Content;
             <ProjectsGrid>
               {chunk.map((entry) => (
                 <Project language={lang} name={entry.data.name}>
-                  <entry.Content />
+                  {entry.data.description}
                 </Project>
               ))}
             </ProjectsGrid>

@@ -19,6 +19,7 @@ export default {
     },
     header: {
       motto: "To z fabryk wychodzą rewolucje!",
+      back: "Wróć na stronę główną",
     },
     categories: {
       association: "Fabryka",
@@ -65,8 +66,12 @@ export default {
       language_switch_to_en: "Great Britain flag as icon",
       language_switch_to_pl: "Poland flag as icon",
     },
+    meta: {
+      title: "Equality Factory",
+    },
     header: {
       motto: "Revolutions starts in factories!",
+      back: "Back to home page",
     },
     categories: {
       association: "Association",
