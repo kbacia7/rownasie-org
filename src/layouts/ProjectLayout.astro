@@ -1,12 +1,13 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Section from "../layouts/Section.astro";
+import Layout from "@layouts/Layout.astro";
+import Section from "@layouts/Section.astro";
+
 import Header from "./Header.astro";
 import Footer from "./Footer.astro";
 
 import { useTranslation } from "../i18n/useTranslation";
 
-import "./index.css";
+import "@styles/index.css";
 
 const { frontmatter, file } = Astro.props;
 const language = file.split("/").at(-2);

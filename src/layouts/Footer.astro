@@ -2,20 +2,20 @@
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 
-import { useTranslation } from "../i18n/useTranslation";
+import { useTranslation } from "@i18n/useTranslation";
 
-import fbIcon from "../images/fb.png";
-import igIcon from "../images/ig.png";
+import fbIcon from "@images/fb.png";
+import igIcon from "@images/ig.png";
 
-import type { Language } from "../i18n/languages";
+import type { Language } from "@i18n/languages";
 
 interface Props {
   language: Language;
 }
 
 const { language } = Astro.props;
-
 const t = useTranslation(language);
+
 const associationInfoCollection = await getCollection("association-info");
 const associationInfo = associationInfoCollection.find(
   ({ id }) => id === `${language}/main`,

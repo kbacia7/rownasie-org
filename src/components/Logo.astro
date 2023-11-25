@@ -1,11 +1,13 @@
 ---
 import { Image } from "astro:assets";
-import logoPl from "../images/logo-pl_PL.png";
-import logoEn from "../images/logo-en_US.png";
 
-import { useTranslation } from "../i18n/useTranslation";
-import { Languages } from "../i18n/languages";
-import { type Language } from "../i18n/languages";
+import { useTranslation } from "@i18n/useTranslation";
+import { Languages } from "@i18n/languages";
+
+import logoPl from "@images/logo-pl_PL.png";
+import logoEn from "@images/logo-en_US.png";
+
+import { type Language } from "@i18n/languages";
 
 interface Props {
   language: Language;

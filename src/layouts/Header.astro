@@ -1,9 +1,11 @@
 ---
-import Logo from "../components/Logo.astro";
-import arrowDown from "../images/move_down.png";
 import { Image } from "astro:assets";
-import { useTranslation } from "../i18n/useTranslation";
-import type { Language } from "../i18n/languages";
+
+import Logo from "@components/Logo.astro";
+import { useTranslation } from "@i18n/useTranslation";
+import arrowDown from "@images/move_down.png";
+
+import type { Language } from "@i18n/languages";
 
 interface Props {
   language: Language;

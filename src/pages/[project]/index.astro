@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import toSlug from "../../helpers/toSlug.mts";
+
+import toSlug from "@helpers/toSlug";
 
 export async function getStaticPaths() {
   const projectsCollection = await getCollection("projects");
@@ -8,18 +9,15 @@ export async function getStaticPaths() {
   return await Promise.all(
     projectsCollection
       .filter(({ slug }) => slug.startsWith("pl"))
-      .map(async (entry) => {
-        console.log("xd", entry.slug);
-        return {
-          props: {
-            ...entry,
-            Content: (await entry.render()).Content,
-          },
-          params: {
-            project: toSlug(entry.data.name),
-          },
-        };
-      }),
+      .map(async (entry) => ({
+        props: {
+          ...entry,
+          Content: (await entry.render()).Content,
+        },
+        params: {
+          project: toSlug(entry.data.name),
+        },
+      })),
   );
 }
 

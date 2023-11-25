@@ -1,21 +1,24 @@
 ---
 import { getCollection } from "astro:content";
 
-import Section from "../../Section.astro";
-import Tabs from "../../../components/Tabs.astro";
-import TabItem from "../../../components/TabItem.astro";
-import { useTranslation } from "../../../i18n/useTranslation";
-import type { Language } from "../../../i18n/languages";
-import PersonDescription from "../../../components/PersonDescription.astro";
-import Slider from "../../../components/Slider.astro";
+import Section from "@layouts/Section.astro";
+
+import Tabs from "@components/Tabs.astro";
+import TabItem from "@components/TabItem.astro";
+import PersonDescription from "@components/PersonDescription.astro";
+import Slider from "@components/Slider.astro";
+
+import { useTranslation } from "@i18n/useTranslation";
+
+import type { Language } from "@i18n/languages";
 
 interface Props {
   language: Language;
 }
 
 const { language } = Astro.props;
-
 const t = useTranslation(language);
+
 const aboutUsCollection = await getCollection("about-us");
 const { Content } =
   (await aboutUsCollection
@@ -26,24 +29,20 @@ const boardMembersCollection = await getCollection("board");
 const boardsContent = await Promise.all(
   boardMembersCollection
     .filter(({ slug }) => slug.startsWith(language))
-    .map(async (entry) => {
-      return {
-        ...entry,
-        Content: (await entry.render()).Content,
-      };
-    }),
+    .map(async (entry) => ({
+      ...entry,
+      Content: (await entry.render()).Content,
+    })),
 );
 
 const auditCommitteeCollection = await getCollection("audit-committee");
 const auditCommitteeContent = await Promise.all(
   auditCommitteeCollection
     .filter(({ slug }) => slug.startsWith(language))
-    .map(async (entry) => {
-      return {
-        ...entry,
-        Content: (await entry.render()).Content,
-      };
-    }),
+    .map(async (entry) => ({
+      ...entry,
+      Content: (await entry.render()).Content,
+    })),
 );
 
 if (!Content) throw new Error("Association content is missing");

@@ -1,22 +1,25 @@
 ---
-import Layout from "../Layout.astro";
-import Navigation from "../../components/Navigation.astro";
-import { useTranslation } from "../../i18n/useTranslation";
-import Modal from "../../components/Modal.astro";
-import HamburgerButton from "../../components/HamburgerButton.astro";
-import LanguageSwitch from "../../components/LanguageSwitch.astro";
+import Layout from "@layouts/Layout.astro";
 
-import { type Language } from "../../i18n/languages";
+import Navigation from "@components/Navigation.astro";
+import Modal from "@components/Modal.astro";
+import HamburgerButton from "@components/HamburgerButton.astro";
+import LanguageSwitch from "@components/LanguageSwitch.astro";
 
-import "../index.css";
-import Footer from "../Footer.astro";
-import Header from "../Header.astro";
+import { useTranslation } from "@i18n/useTranslation";
+import { type Language } from "@i18n/languages";
+
 import AboutUs from "./sections/AboutUs.astro";
 import Projects from "./sections/Projects.astro";
 import Support from "./sections/Support.astro";
 import Contact from "./sections/Contact.astro";
 import SupportUs from "./sections/SupportUs.astro";
 import Documents from "./sections/Documents.astro";
+
+import Header from "../Header.astro";
+import Footer from "../Footer.astro";
+
+import "@styles/index.css";
 
 interface Props {
   lang: Language;

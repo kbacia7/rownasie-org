@@ -1,9 +1,12 @@
 ---
 import { Image } from "astro:assets";
-import brandImg from "../images/brand.png";
-import toSlug from "../helpers/toSlug.mts";
-import { useTranslation } from "../i18n/useTranslation";
-import type { Language } from "../i18n/languages";
+
+import toSlug from "@helpers/toSlug";
+import { useTranslation } from "@i18n/useTranslation";
+
+import brandImg from "@images/brand.png";
+
+import type { Language } from "@i18n/languages";
 
 interface Props {
   id: string;
@@ -62,19 +65,17 @@ const sections = Object.values(t("section_titles"));
           class="h-full max-h-full grid grid-rows-12 navigation-wheel-items"
         >
           {
-            sections.map((section, index) => {
-              return (
-                <div
-                  class:list={[`element-${index}`]}
-                  data-wheel-item-index={index}
-                  data-wheel-item-slug={toSlug(section)}
-                >
-                  <span class="text-lg text-white md:text-3xl md:text-#a6a6a6">
-                    <a href={`#${toSlug(section)}`}>{section}</a>
-                  </span>
-                </div>
-              );
-            })
+            sections.map((section, index) => (
+              <div
+                class:list={[`element-${index}`]}
+                data-wheel-item-index={index}
+                data-wheel-item-slug={toSlug(section)}
+              >
+                <span class="text-lg text-white md:text-3xl md:text-#a6a6a6">
+                  <a href={`#${toSlug(section)}`}>{section}</a>
+                </span>
+              </div>
+            ))
           }
         </div>
       </div>
@@ -82,7 +83,19 @@ const sections = Object.values(t("section_titles"));
   </div>
 
   <script>
-    import debounce from "../helpers/debounce.mts";
+    import debounce from "@helpers/debounce";
+
+    //  NOTE: I had to add this unnecessary type
+    // due to error in astro eslint plugin which cause problems
+    // with typescript in script tags (Typescript there is supported by astro)
+    // and w/o IntersectionObserverDebounce type
+    // reports debounce<(entries: IntersectionObserverEntry[]) => void>;
+    // as syntax error
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    type IntersectionObserverDebounce = (
+      entries: IntersectionObserverEntry[],
+    ) => void;
 
     let currentRotate = -30;
     const MAX_ITEMS_IN_WHEEL = 6; //TODO: This should be automatic...
@@ -139,7 +152,6 @@ const sections = Object.values(t("section_titles"));
             elItemIndex - 2 > newActiveItemIndex ||
             (newActiveItemIndex > elItemIndex && nextElNumberClass > 2)
           ) {
-            console.log("lol?", el);
             el.classList.add("hidden");
           } else {
             el.classList.remove("hidden");
@@ -161,85 +173,84 @@ const sections = Object.values(t("section_titles"));
 
       const observer = new IntersectionObserver(
         (entries) => {
-          debounce<(entries: IntersectionObserverEntry[]) => void>(
-            (entries) => {
-              let anyIntersect = false;
-              entries.forEach(({ isIntersecting, target }) => {
-                if (isIntersecting) {
-                  anyIntersect = true;
-                  const newItemSlug =
-                    target.getAttribute("data-section-slug") ?? "";
-                  const newActiveIndex = parseInt(
-                    document
-                      .querySelector(`[data-wheel-item-slug='${newItemSlug}']`)
-                      ?.getAttribute("data-wheel-item-index") ?? "",
-                  );
+          // eslint-disable-next-line no-undef
+          debounce<IntersectionObserverDebounce>((entries) => {
+            let anyIntersect = false;
 
-                  const currentActiveIndex = parseInt(
-                    document
-                      .querySelector(`.element-2`)
-                      ?.getAttribute("data-wheel-item-index") ?? "",
-                  );
+            entries.forEach(({ isIntersecting, target }) => {
+              if (isIntersecting) {
+                anyIntersect = true;
+                const newItemSlug =
+                  target.getAttribute("data-section-slug") ?? "";
+                const newActiveIndex = parseInt(
+                  document
+                    .querySelector(`[data-wheel-item-slug='${newItemSlug}']`)
+                    ?.getAttribute("data-wheel-item-index") ?? "",
+                );
 
-                  let nextRotate =
-                    currentRotate +
-                    (currentActiveIndex > newActiveIndex ? 30 : -30);
-                  const anim = navigationWheel.animate(
+                const currentActiveIndex = parseInt(
+                  document
+                    .querySelector(`.element-2`)
+                    ?.getAttribute("data-wheel-item-index") ?? "",
+                );
+
+                let nextRotate =
+                  currentRotate +
+                  (currentActiveIndex > newActiveIndex ? 30 : -30);
+                const anim = navigationWheel.animate(
+                  [
+                    { transform: `rotate(${currentRotate}deg)` },
+                    { transform: `rotate(${nextRotate}deg)` },
+                  ],
+                  {
+                    duration: 450,
+                    fill: "forwards",
+                  },
+                );
+
+                anim.finished.then(() => {
+                  currentRotate = nextRotate;
+                  if (navigationWheel.getBoundingClientRect().width) {
+                    anim.commitStyles();
+                    anim.cancel();
+                  }
+
+                  setActiveItem(newActiveIndex, true);
+                });
+              }
+            });
+
+            if (autoHide) {
+              if (anyIntersect) {
+                if (nav.classList.contains("hidden")) {
+                  nav.classList.remove("hidden");
+                  nav.animate(
                     [
-                      { transform: `rotate(${currentRotate}deg)` },
-                      { transform: `rotate(${nextRotate}deg)` },
+                      { transform: `translateX(-50%)` },
+                      { transform: `translateX(0)` },
                     ],
                     {
                       duration: 450,
-                      fill: "forwards",
                     },
                   );
-
-                  anim.finished.then(() => {
-                    currentRotate = nextRotate;
-                    if (navigationWheel.getBoundingClientRect().width) {
-                      anim.commitStyles();
-                      anim.cancel();
-                    }
-
-                    setActiveItem(newActiveIndex, true);
+                }
+              } else {
+                nav
+                  .animate(
+                    [
+                      { transform: `translateX(0)` },
+                      { transform: `translateX(-50%)` },
+                    ],
+                    {
+                      duration: 450,
+                    },
+                  )
+                  .finished.then(() => {
+                    nav.classList.add("hidden");
                   });
-                }
-              });
-
-              if (autoHide) {
-                if (anyIntersect) {
-                  if (nav.classList.contains("hidden")) {
-                    nav.classList.remove("hidden");
-                    nav.animate(
-                      [
-                        { transform: `translateX(-50%)` },
-                        { transform: `translateX(0)` },
-                      ],
-                      {
-                        duration: 450,
-                      },
-                    );
-                  }
-                } else {
-                  nav
-                    .animate(
-                      [
-                        { transform: `translateX(0)` },
-                        { transform: `translateX(-50%)` },
-                      ],
-                      {
-                        duration: 450,
-                      },
-                    )
-                    .finished.then(() => {
-                      nav.classList.add("hidden");
-                    });
-                }
               }
-            },
-            150,
-          )(entries);
+            }
+          }, 150)(entries);
         },
         {
           rootMargin: "-50% 0% -50% 0%",

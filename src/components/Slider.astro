@@ -1,9 +1,11 @@
 ---
 import { Image } from "astro:assets";
-import { useTranslation } from "../i18n/useTranslation";
-import arrow from "../images/move_down.png";
 
-import type { Language } from "../i18n/languages";
+import { useTranslation } from "@i18n/useTranslation";
+
+import arrow from "@images/move_down.png";
+
+import type { Language } from "@i18n/languages";
 
 interface Props {
   language: Language;

@@ -1,23 +1,11 @@
-module.exports = {
-  root: true,
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
+const sharedConfig = {
+  parserOptions: {
+    parser: "@typescript-eslint/parser",
+    extraFileExtensions: [".astro"],
+    sourceType: "module",
   },
-  extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
-  ],
-  ignorePatterns: ["dist", ".eslintrc.cjs"],
-  parser: "@typescript-eslint/parser",
   rules: {
     "no-console": ["error", { allow: ["warn", "error"] }],
-    "react-refresh/only-export-components": [
-      "warn",
-      { allowConstantExport: true },
-    ],
     "arrow-body-style": ["error", "as-needed"],
     "@typescript-eslint/consistent-type-imports": [
       "error",
@@ -27,5 +15,43 @@ module.exports = {
         fixStyle: "separate-type-imports",
       },
     ],
+    "import/order": [
+      "error",
+      {
+        groups: [
+          "builtin",
+          "external",
+          "internal",
+          "sibling",
+          "parent",
+          "index",
+          "object",
+          "type",
+        ],
+        "newlines-between": "always-and-inside-groups",
+      },
+    ],
+    "import/no-unresolved": ["off"],
   },
+};
+
+module.exports = {
+  root: true,
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:astro/recommended",
+    "plugin:astro/jsx-a11y-recommended",
+    "plugin:import/recommended",
+    "prettier",
+  ],
+  overrides: [
+    {
+      files: ["*.astro"],
+      parser: "astro-eslint-parser",
+      ...sharedConfig,
+    },
+  ],
+  ...sharedConfig,
+  ignorePatterns: ["dist", ".eslintrc.cjs"],
 };

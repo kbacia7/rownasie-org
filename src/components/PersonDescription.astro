@@ -1,10 +1,13 @@
 ---
-import { Image, getImage } from "astro:assets";
-import { useTranslation } from "../i18n/useTranslation";
-import type { Language } from "../i18n/languages";
+import { Image } from "astro:assets";
+
+import { useTranslation } from "@i18n/useTranslation";
+
+import type { LocalImageProps } from "astro:assets";
+import type { Language } from "@i18n/languages";
 
 interface Props {
-  photo: any;
+  photo: LocalImageProps["src"];
   name: string;
   title: string;
   language: Language;
