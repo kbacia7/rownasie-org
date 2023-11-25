@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 
 import Section from "@layouts/Section.astro";
+import Button from "@components/Button.astro";
 import { useTranslation } from "@i18n/useTranslation";
 
 import type { Language } from "@i18n/languages";
@@ -25,8 +26,8 @@ const SupportUsContent = (await supportUsContent.render()).Content;
 <Section title={t("section_titles.support_us")}>
   <SupportUsContent />
   <a href={supportUsContent.data.donateLink} target="_blank">
-    <button class="btn btn-primary block m-auto"
-      >{t("support_us.button")}</button
-    >
+    <Button class="block m-auto">
+      {t("support_us.button")}
+    </Button>
   </a>
 </Section>

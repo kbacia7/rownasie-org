@@ -1,16 +1,16 @@
 ---
+import Button from "./Button.astro";
+
 interface Props {
-  classes: string;
+  class: string;
 }
 
-const { classes } = Astro.props;
+const { class: classes } = Astro.props;
 ---
 
-<div
-  class:list={[
-    "btn btn-primary w-70px rounded-full fixed right-5 bottom-5 z-10",
-    classes,
-  ]}
+<Button
+  class:list={["w-70px rounded-full fixed right-5 bottom-5 z-10", classes]}
+  as="div"
 >
   <slot />
-</div>
+</Button>

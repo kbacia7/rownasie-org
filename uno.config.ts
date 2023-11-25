@@ -17,8 +17,6 @@ export default defineConfig({
     }),
   ],
   shortcuts: {
-    btn: "rounded-md text-white px-3 py-2 md:px-5 md:py-4",
-    "btn-primary": "bg-primary border-primary-600 b-1 hover:bg-primary-400 ",
     "tab-active": "opacity-100 h-auto",
     "tab-inactive": "opacity-0 h-0 overflow-hidden",
   },
