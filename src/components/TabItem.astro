@@ -6,6 +6,6 @@ interface Props {
 const { id } = Astro.props;
 ---
 
-<div id={id} class="tab-inactive transition-opacity duration-500 ease-in">
+<div class="tab-inactive transition-opacity duration-500 ease-in" id={id}>
   <slot />
 </div>

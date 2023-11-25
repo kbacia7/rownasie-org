@@ -6,6 +6,7 @@ import Section from "@layouts/Section.astro";
 import Tabs from "@components/Tabs.astro";
 import TabItem from "@components/TabItem.astro";
 
+import toSlug from "@helpers/toSlug";
 import { useTranslation } from "@i18n/useTranslation";
 
 import type { Language } from "@i18n/languages";
@@ -32,12 +33,12 @@ const supportContent = await Promise.all(
   <Tabs
     list={supportContent.map(({ data: { name }, slug }) => ({
       tab: name,
-      id: slug,
+      id: toSlug(slug),
     }))}
   >
     {
       supportContent.map((entry) => (
-        <TabItem id={entry.slug}>
+        <TabItem id={toSlug(entry.slug)}>
           <entry.Content />
         </TabItem>
       ))

@@ -16,10 +16,6 @@ export default defineConfig({
       },
     }),
   ],
-  shortcuts: {
-    "tab-active": "opacity-100 h-auto",
-    "tab-inactive": "opacity-0 h-0 overflow-hidden",
-  },
   theme: {
     colors: {
       "primary-100": "#E0D8EA",

@@ -8,6 +8,20 @@ interface Props {
 const { list } = Astro.props;
 ---
 
+<style is:global>
+  div.tab-inactive {
+    @apply opacity-0 h-0 overflow-hidden;
+  }
+
+  div.tab-active {
+    @apply opacity-100 h-auto;
+  }
+
+  button.tab-active {
+    @apply bg-primary-700 hover:bg-primary-600;
+  }
+</style>
+
 <div data-root-tabs>
   <ul class="overflow-auto mb-15 whitespace-nowrap">
     {
@@ -31,18 +45,30 @@ const { list } = Astro.props;
     const tabsContentEl = rootEl.querySelector(".tabs-content");
     if (!tabsContentEl) return;
 
-    tabsContentEl.children[0].classList.replace("tab-inactive", "tab-active");
-    rootEl.querySelectorAll(`[data-tab-id]`).forEach((tabEl) => {
-      tabEl.addEventListener("click", () => {
-        let activeTab = rootEl.querySelector(".tab-active");
-        if (!activeTab) return;
+    const firstTabContent = tabsContentEl.children[0];
+    const firstTabButton = rootEl.querySelector(
+      `[data-tab-id=${firstTabContent.id}`,
+    );
 
-        const contentEl = document.getElementById(
-          tabEl.getAttribute("data-tab-id") ?? "",
+    firstTabButton?.classList.add("tab-active");
+    firstTabContent.classList.replace("tab-inactive", "tab-active");
+
+    rootEl.querySelectorAll(`[data-tab-id]`).forEach((tabButton) => {
+      tabButton.addEventListener("click", () => {
+        const activeTabButton = rootEl.querySelector("button.tab-active");
+        let activeTabContent = rootEl.querySelector("div.tab-active");
+
+        if (!activeTabContent || !activeTabButton) return;
+
+        const selectedContentEl = document.getElementById(
+          tabButton.getAttribute("data-tab-id") ?? "",
         );
 
-        activeTab.classList.replace("tab-active", "tab-inactive");
-        contentEl?.classList.replace("tab-inactive", "tab-active");
+        activeTabContent.classList.replace("tab-active", "tab-inactive");
+        selectedContentEl?.classList.replace("tab-inactive", "tab-active");
+
+        tabButton.classList.add("tab-active");
+        activeTabButton.classList.remove("tab-active");
       });
     });
   });
