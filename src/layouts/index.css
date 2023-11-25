@@ -33,3 +33,7 @@ section p a:visited {
 section p a:hover {
   @apply text-secondary-700
 }
+
+section p {
+  @apply my-5;
+}

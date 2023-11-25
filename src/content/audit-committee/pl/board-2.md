@@ -1,5 +1,4 @@
 ---
-layout: ../../../layouts/DefaultTextLayout.astro
 photo: "../images/board-1.png"
 name: "Ida Mickiewicz-Florczak"
 title: "Prezeska"

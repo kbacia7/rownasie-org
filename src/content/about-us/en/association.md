@@ -1,5 +1,4 @@
 ---
-layout: ../../../layouts/DefaultTextLayout.astro
 ---
 
 The Equality Factory is an association established in 2009 in Łódź based on the local group of the Campaign Against Homophobia. We are the largest cultural and educational organization in the region, working for LGBTQ+ people and one of the most dynamically operating equality organizations in Poland. We deal with broadly understood culture animation, promoting accepting attitudes towards non-​heterosexual and transgender people, as well as equality and anti-​discrimination education.

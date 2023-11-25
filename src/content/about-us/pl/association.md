@@ -1,5 +1,4 @@
 ---
-layout: ../../../layouts/DefaultTextLayout.astro
 ---
 
 Fabryka Równości jest stowarzyszeniem powstałym w 2009 roku w Łodzi na bazie grupy lokalnej Kampanii Przeciw Homofobii. Jesteśmy największą w Łodzi i regionie organizacją kulturalno-​edukacyjną, działającą na rzecz osób LGBTQ+ oraz jedną z najdynamiczniej działających organizacji równościowych w Polsce. Zajmujemy się szeroko pojętą animacją kultury, promowaniem postaw akceptacji wobec osób nieheteroseksualnych i transpłciowych oraz edukacją równościową i antydyskryminacyjną.

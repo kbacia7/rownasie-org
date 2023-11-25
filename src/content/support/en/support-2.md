@@ -1,5 +1,4 @@
 ---
-layout: ../../../layouts/DefaultTextLayout.astro
 name: "Transgender"
 ---
 
