@@ -46,131 +46,200 @@ const sections = Object.values(t("section_titles"));
   }
 </style>
 
-<nav id={id} class={classes} data-wheel-auto-hide={autoHide?.toString?.()}>
-  <div class="translate-x--1/2 md:translate-x--1/3 translate-y-1/2">
-    <div
-      class="grid gap-10"
-      style={{ gridTemplateColumns: "max-content max-content" }}
-    >
-      <div class="w-300px md:w-500px">
-        <Image
-          class="navigation-wheel"
-          src={brandImg}
-          alt={t("images_alt.brand")}
-        />
-      </div>
-      <div>
-        <div
-          id="navigation-wheel-items"
-          class="h-full max-h-full grid grid-rows-12 navigation-wheel-items"
-        >
-          {
-            sections.map((section, index) => (
-              <div
-                class:list={[`element-${index}`]}
-                data-wheel-item-index={index}
-                data-wheel-item-slug={toSlug(section)}
-              >
-                <span class="text-lg text-white md:text-3xl md:text-#a6a6a6">
-                  <a href={`#${toSlug(section)}`}>{section}</a>
-                </span>
-              </div>
-            ))
-          }
+<basic-navigation
+  data-wheel-items-count={sections.length}
+  data-wheel-auto-hide={autoHide?.toString?.()}
+>
+  <nav id={id} class={classes}>
+    <div class="translate-x--1/2 md:translate-x--1/3 translate-y-1/2">
+      <div
+        class="grid gap-10"
+        style={{ gridTemplateColumns: "max-content max-content" }}
+      >
+        <div class="w-300px md:w-500px">
+          <Image
+            class="navigation-wheel"
+            src={brandImg}
+            alt={t("images_alt.brand")}
+          />
+        </div>
+        <div>
+          <div class="h-full max-h-full grid grid-rows-12">
+            {
+              sections.map((section, index) => (
+                <basic-navigation-item
+                  class:list={[`element-${index}`]}
+                  data-wheel-item-position-on-site={index}
+                  data-wheel-item-id={toSlug(section)}
+                >
+                  <span class="text-lg text-white md:text-3xl md:text-#a6a6a6">
+                    <a href={`#${toSlug(section)}`}>{section}</a>
+                  </span>
+                </basic-navigation-item>
+              ))
+            }
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </nav>
+</basic-navigation>
 
-  <script>
-    import debounce from "@helpers/debounce";
+<script>
+  import debounce from "@helpers/debounce";
 
-    //  NOTE: I had to add this unnecessary type
-    // due to error in astro eslint plugin which cause problems
-    // with typescript in script tags (Typescript there is supported by astro)
-    // and w/o IntersectionObserverDebounce type
-    // reports debounce<(entries: IntersectionObserverEntry[]) => void>;
-    // as syntax error
+  //  NOTE: I had to add this unnecessary type
+  // due to error in astro eslint plugin which cause problems
+  // with typescript in script tags (Typescript there is supported by astro)
+  // and w/o IntersectionObserverDebounce type
+  // reports debounce<(entries: IntersectionObserverEntry[]) => void>;
+  // as syntax error
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    type IntersectionObserverDebounce = (
-      entries: IntersectionObserverEntry[],
-    ) => void;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  type IntersectionObserverDebounce = (
+    entries: IntersectionObserverEntry[],
+  ) => void;
 
-    let currentRotate = -30;
-    const MAX_ITEMS_IN_WHEEL = 6; //TODO: This should be automatic...
+  const ITEM_IN_WHEEL_CLASS_NAME_PREFIX = "element-";
+  const ACTIVE_POSITION_IN_WHEEL = 2;
+  const ATTR_ITEM_POSITION_ON_SITE = "data-wheel-item-position-on-site";
+  const ATTR_ITEM_ID = "data-wheel-item-id";
 
-    const setActiveItem = (index: number, withoutAnim: boolean) => {
-      const newActive = document.querySelector(
-        `[data-wheel-item-index='${index}']`,
+  class BasicNavigationItem extends HTMLElement {
+    get itemPositionOnSite() {
+      return parseInt(this.getAttribute(ATTR_ITEM_POSITION_ON_SITE) ?? "");
+    }
+
+    get itemPositionInWheel() {
+      const groupedClassNames = this.className.split(
+        ITEM_IN_WHEEL_CLASS_NAME_PREFIX,
       );
 
-      const currentActive = document.querySelector(
-        `[data-wheel-item-index].element-2`,
+      if (groupedClassNames.length < 2)
+        throw Error("Incorrect basic navigation item found");
+
+      return parseInt(groupedClassNames[1].split(" ")[0]);
+    }
+
+    set itemPositionInWheel(val) {
+      this.classList.toggle(
+        ITEM_IN_WHEEL_CLASS_NAME_PREFIX.concat(
+          this.itemPositionInWheel.toString(),
+        ),
       );
 
-      if (!newActive || !currentActive) return;
+      this.classList.toggle(
+        ITEM_IN_WHEEL_CLASS_NAME_PREFIX.concat(val.toString()),
+      );
+    }
 
-      // NOTE: Oh god move it...
-      const newActiveElNumberClass = parseInt(
-        newActive.className.at(
-          newActive.className.indexOf("element-") + "element-".length,
-        ) ?? "",
+    get itemId() {
+      return this.getAttribute("data-wheel-item-id");
+    }
+
+    constructor() {
+      super();
+    }
+  }
+
+  class BasicNavigation extends HTMLElement {
+    #navigationWheel: HTMLImageElement;
+    #wheelRotation: number = 30;
+
+    #activeItem?: BasicNavigationItem | null;
+    get activeItem() {
+      return this.#activeItem;
+    }
+
+    set activeItem(val) {
+      this.#activeItem = val;
+      this.reorderNavigationItems();
+    }
+
+    get itemsInWheel() {
+      return parseInt(this.getAttribute("data-wheel-items-count") ?? "");
+    }
+
+    get autoHide() {
+      return !!this.getAttribute("data-wheel-auto-hide");
+    }
+
+    reorderNavigationItems() {
+      if (this.activeItem) {
+        const orderItemsVector =
+          ACTIVE_POSITION_IN_WHEEL - this.activeItem.itemPositionInWheel;
+
+        this.querySelectorAll(`[${ATTR_ITEM_POSITION_ON_SITE}]`).forEach(
+          (el) => {
+            if (!this.activeItem) return;
+
+            const navigationItem = el as BasicNavigationItem;
+            const newPositionInWheel =
+              (this.itemsInWheel +
+                (navigationItem.itemPositionInWheel + orderItemsVector)) %
+              this.itemsInWheel;
+
+            navigationItem.itemPositionInWheel = newPositionInWheel;
+
+            if (
+              navigationItem.itemPositionOnSite - ACTIVE_POSITION_IN_WHEEL >
+                this.activeItem.itemPositionOnSite ||
+              (this.activeItem.itemPositionOnSite >
+                navigationItem.itemPositionOnSite &&
+                newPositionInWheel > ACTIVE_POSITION_IN_WHEEL)
+            ) {
+              navigationItem.classList.add("hidden");
+            } else {
+              navigationItem.classList.remove("hidden");
+            }
+          },
+        );
+      }
+    }
+
+    rotateWheel(wheelItem: BasicNavigationItem, onFinish: () => void) {
+      const currentActivePositionOnSite =
+        this.activeItem?.itemPositionOnSite || 0;
+
+      let nextRotation =
+        this.#wheelRotation +
+        (currentActivePositionOnSite > wheelItem.itemPositionOnSite ? 30 : -30);
+
+      const anim = this.#navigationWheel.animate(
+        [
+          { transform: `rotate(${this.#wheelRotation}deg)` },
+          { transform: `rotate(${nextRotation}deg)` },
+        ],
+        {
+          duration: 450,
+          fill: "forwards",
+        },
       );
 
-      const newActiveItemIndex = parseInt(
-        newActive.getAttribute("data-wheel-item-index") ?? "",
-      );
+      anim.finished.then(() => {
+        this.#wheelRotation = nextRotation;
+        if (this.#navigationWheel.getBoundingClientRect().width) {
+          anim.commitStyles();
+          anim.cancel();
+        }
 
-      if (withoutAnim) {
-        const activeItemIndex = parseInt(
-          currentActive.getAttribute("data-wheel-item-index") ?? "",
+        onFinish();
+      });
+    }
+
+    constructor() {
+      super();
+
+      const navigationWheel =
+        this.querySelector<HTMLImageElement>(".navigation-wheel");
+      const nav = this.querySelector("nav");
+
+      if (!navigationWheel || !nav)
+        throw new Error(
+          "Basic navigation can't find their required DOM Elements",
         );
 
-        if (activeItemIndex === index) return;
-
-        const movement = 2 - newActiveElNumberClass;
-        document.querySelectorAll("[data-wheel-item-index]").forEach((el) => {
-          const elItemIndex = parseInt(
-            el.getAttribute("data-wheel-item-index") ?? "",
-          );
-
-          const elementNumberClass = parseInt(
-            el.className.at(
-              el.className.indexOf("element-") + "element-".length,
-            ) ?? "",
-          );
-
-          const nextElNumberClass =
-            (MAX_ITEMS_IN_WHEEL + (elementNumberClass + movement)) %
-            MAX_ITEMS_IN_WHEEL;
-
-          el.classList.toggle(`element-${elementNumberClass}`);
-          el.classList.toggle(`element-${nextElNumberClass}`);
-
-          if (
-            elItemIndex - 2 > newActiveItemIndex ||
-            (newActiveItemIndex > elItemIndex && nextElNumberClass > 2)
-          ) {
-            el.classList.add("hidden");
-          } else {
-            el.classList.remove("hidden");
-          }
-        });
-      }
-    };
-
-    const navigationWheels = document.querySelectorAll(".navigation-wheel");
-    navigationWheels.forEach((navigationWheel) => {
-      const nav = navigationWheel.closest("nav");
-      const autoHide = nav?.getAttribute("data-wheel-auto-hide");
-      const navigationWheelItems = nav?.querySelector(
-        ".navigation-wheel-items",
-      );
-
-      if (!navigationWheel || !navigationWheelItems || !nav)
-        throw Error("Can't find wheel");
-
+      this.#navigationWheel = navigationWheel;
       const observer = new IntersectionObserver(
         (entries) => {
           // eslint-disable-next-line no-undef
@@ -180,47 +249,21 @@ const sections = Object.values(t("section_titles"));
             entries.forEach(({ isIntersecting, target }) => {
               if (isIntersecting) {
                 anyIntersect = true;
-                const newItemSlug =
+
+                const newItemId =
                   target.getAttribute("data-section-slug") ?? "";
-                const newActiveIndex = parseInt(
-                  document
-                    .querySelector(`[data-wheel-item-slug='${newItemSlug}']`)
-                    ?.getAttribute("data-wheel-item-index") ?? "",
-                );
 
-                const currentActiveIndex = parseInt(
-                  document
-                    .querySelector(`.element-2`)
-                    ?.getAttribute("data-wheel-item-index") ?? "",
-                );
+                const newActiveItem = this.querySelector(
+                  `[${ATTR_ITEM_ID}='${newItemId}']`,
+                ) as BasicNavigationItem;
 
-                let nextRotate =
-                  currentRotate +
-                  (currentActiveIndex > newActiveIndex ? 30 : -30);
-                const anim = navigationWheel.animate(
-                  [
-                    { transform: `rotate(${currentRotate}deg)` },
-                    { transform: `rotate(${nextRotate}deg)` },
-                  ],
-                  {
-                    duration: 450,
-                    fill: "forwards",
-                  },
-                );
-
-                anim.finished.then(() => {
-                  currentRotate = nextRotate;
-                  if (navigationWheel.getBoundingClientRect().width) {
-                    anim.commitStyles();
-                    anim.cancel();
-                  }
-
-                  setActiveItem(newActiveIndex, true);
+                this.rotateWheel(newActiveItem, () => {
+                  this.activeItem = newActiveItem;
                 });
               }
             });
 
-            if (autoHide) {
+            if (this.autoHide) {
               if (anyIntersect) {
                 if (nav.classList.contains("hidden")) {
                   nav.classList.remove("hidden");
@@ -260,6 +303,9 @@ const sections = Object.values(t("section_titles"));
       document.querySelectorAll("section").forEach((el) => {
         observer.observe(el);
       });
-    });
-  </script>
-</nav>
+    }
+  }
+
+  customElements.define("basic-navigation", BasicNavigation);
+  customElements.define("basic-navigation-item", BasicNavigationItem);
+</script>
