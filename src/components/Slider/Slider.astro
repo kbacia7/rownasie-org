@@ -15,7 +15,7 @@ const { language } = Astro.props;
 const t = useTranslation(language);
 ---
 
-<div class="slider">
+<basic-slider>
   <div
     class="slider-grid grid grid-flow-col auto-cols-100% overflow-hidden relative"
   >
@@ -23,7 +23,7 @@ const t = useTranslation(language);
   </div>
 
   <div class="flex justify-center">
-    <button class="slider-nav-prev hidden">
+    <button class="slider-nav-prev">
       <Image
         src={arrow}
         alt={t("images_alt.slider_arrow_left")}
@@ -42,84 +42,79 @@ const t = useTranslation(language);
       />
     </button>
   </div>
-</div>
+</basic-slider>
 
 <script>
-  const scrollIntoContent = (currentActive: Element, newActive: Element) => {
-    currentActive.classList.remove("slider-active-content");
-    newActive.classList.add("slider-active-content");
-    newActive.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "center",
-    });
-  };
+  class BasicSlider extends HTMLElement {
+    #activeItem?: HTMLElement | null;
+    get activeItem() {
+      return this.#activeItem;
+    }
 
-  const toggleNavigationButtons = (
-    prevButton: Element,
-    nextButton: Element,
-    currentActive: Element,
-  ) => {
-    if (
-      currentActive.nextElementSibling &&
-      nextButton.classList.contains("hidden")
-    )
-      nextButton.classList.remove("hidden");
+    set activeItem(val) {
+      this.#activeItem = val;
+      this.updateNavigationButtons();
+    }
 
-    if (
-      !currentActive.nextElementSibling &&
-      !nextButton.classList.contains("hidden")
-    )
-      nextButton.classList.add("hidden");
+    navigationButtons: {
+      previous: HTMLButtonElement;
+      next: HTMLButtonElement;
+    };
 
-    if (
-      currentActive.previousElementSibling &&
-      prevButton.classList.contains("hidden")
-    )
-      prevButton.classList.remove("hidden");
+    constructor() {
+      super();
 
-    if (
-      !currentActive.previousElementSibling &&
-      !prevButton.classList.contains("hidden")
-    )
-      prevButton.classList.add("hidden");
-  };
+      // NOTE: I promise that I know about this.querySelector<T>
+      // but eslint astro plugin have problems with TS in script tags
+      // and reports this.querySelector<T> as syntax error
+      // https://github.com/ota-meshi/eslint-plugin-astro/issues/240
+      const prevButton = this.querySelector(
+        "button.slider-nav-prev",
+      ) as HTMLButtonElement;
 
-  document.querySelectorAll(".slider").forEach((rootEl) => {
-    const elementsGrid = rootEl.querySelector(".slider-grid");
-    const firstContent = elementsGrid?.children?.[0];
-    if (!firstContent) return;
+      const nextButton = this.querySelector(
+        "button.slider-nav-next",
+      ) as HTMLButtonElement;
 
-    firstContent.classList.add("slider-active-content");
+      const elementsGrid = this.querySelector<HTMLElement>(".slider-grid");
+      const firstContent = elementsGrid?.children?.[0] as HTMLElement;
 
-    const prevButton = rootEl.querySelector(".slider-nav-prev");
-    const nextButton = rootEl.querySelector(".slider-nav-next");
-    if (!nextButton || !prevButton) return;
+      if (!prevButton || !nextButton || !elementsGrid || !firstContent)
+        throw new Error("Basic slider can't find their required DOM Elements");
 
-    prevButton?.addEventListener("click", () => {
-      const activeContent = rootEl.querySelector(".slider-active-content");
-      const newActive = activeContent?.previousElementSibling;
-      if (!newActive) return;
+      this.navigationButtons = {
+        previous: prevButton,
+        next: nextButton,
+      };
 
-      scrollIntoContent(activeContent, newActive);
-      if (!newActive.previousElementSibling) {
-        prevButton.classList.add("hidden");
-      }
+      this.activeItem = firstContent;
 
-      toggleNavigationButtons(prevButton, nextButton, newActive);
-    });
+      this.navigationButtons.previous.addEventListener("click", () => {
+        this.activeItem = this.activeItem
+          ?.previousElementSibling as HTMLElement;
+        this.scrollIntoActiveItem();
+      });
 
-    nextButton?.addEventListener("click", () => {
-      const activeContent = rootEl.querySelector(".slider-active-content");
-      const newActive = activeContent?.nextElementSibling;
-      if (!newActive) return;
+      this.navigationButtons.next.addEventListener("click", () => {
+        this.activeItem = this.activeItem?.nextElementSibling as HTMLElement;
+        this.scrollIntoActiveItem();
+      });
+    }
 
-      scrollIntoContent(activeContent, newActive);
-      if (!newActive.nextElementSibling) {
-        nextButton.classList.add("hidden");
-      }
+    updateNavigationButtons() {
+      this.navigationButtons.next.hidden = !this.activeItem?.nextElementSibling;
+      this.navigationButtons.previous.hidden =
+        !this.activeItem?.previousElementSibling;
+    }
 
-      toggleNavigationButtons(prevButton, nextButton, newActive);
-    });
-  });
+    scrollIntoActiveItem() {
+      this.activeItem?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }
+
+  customElements.define("basic-slider", BasicSlider);
 </script>
