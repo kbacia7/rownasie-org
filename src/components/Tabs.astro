@@ -22,7 +22,7 @@ const { list } = Astro.props;
   }
 </style>
 
-<div data-root-tabs>
+<basic-tabs data-root-tabs>
   <ul class="overflow-auto mb-15 whitespace-nowrap">
     {
       list.map(({ tab, id }) => (
@@ -34,42 +34,75 @@ const { list } = Astro.props;
       ))
     }
   </ul>
-  <div class="tabs-content mt-5 overflow-hidden">
+  <div class="tabs-wrapper mt-5 overflow-hidden">
     <slot />
   </div>
-</div>
+</basic-tabs>
 
 <script>
-  const tabsRoots = document.querySelectorAll(`[data-root-tabs]`);
-  tabsRoots.forEach((rootEl) => {
-    const tabsContentEl = rootEl.querySelector(".tabs-content");
-    if (!tabsContentEl) return;
+  class BasicTabs extends HTMLElement {
+    #activeTab?: {
+      content: HTMLElement | null;
+      toggleButton: HTMLButtonElement;
+    };
 
-    const firstTabContent = tabsContentEl.children[0];
-    const firstTabButton = rootEl.querySelector(
-      `[data-tab-id=${firstTabContent.id}`,
-    );
+    get activeTab() {
+      return this.#activeTab;
+    }
 
-    firstTabButton?.classList.add("tab-active");
-    firstTabContent.classList.replace("tab-inactive", "tab-active");
+    set activeTab(val) {
+      if (val) {
+        if (!val?.content || !val?.toggleButton)
+          throw new Error("Basic tabs received incomplete active tab object");
 
-    rootEl.querySelectorAll(`[data-tab-id]`).forEach((tabButton) => {
-      tabButton.addEventListener("click", () => {
-        const activeTabButton = rootEl.querySelector("button.tab-active");
-        let activeTabContent = rootEl.querySelector("div.tab-active");
+        val.content.classList.replace("tab-inactive", "tab-active");
+        val.toggleButton.classList.add("tab-active");
+      }
 
-        if (!activeTabContent || !activeTabButton) return;
+      if (this.#activeTab) {
+        if (!this.#activeTab?.content || !this.#activeTab?.toggleButton)
+          throw new Error("Basic tabs received incomplete active tab object");
 
-        const selectedContentEl = document.getElementById(
-          tabButton.getAttribute("data-tab-id") ?? "",
-        );
+        this.#activeTab.content.classList.replace("tab-active", "tab-inactive");
+        this.#activeTab.toggleButton.classList.remove("tab-active");
+      }
 
-        activeTabContent.classList.replace("tab-active", "tab-inactive");
-        selectedContentEl?.classList.replace("tab-inactive", "tab-active");
+      this.#activeTab = val;
+    }
 
-        tabButton.classList.add("tab-active");
-        activeTabButton.classList.remove("tab-active");
+    constructor() {
+      super();
+
+      const tabsItemsWrapper = this.querySelector(".tabs-wrapper");
+      const firstTabContent = tabsItemsWrapper
+        ?.children[0] as HTMLElement | null;
+
+      const firstTabToggleButton = this.querySelector(
+        `[data-tab-id=${firstTabContent?.getAttribute("data-tab-id")}`,
+      ) as HTMLButtonElement | null;
+
+      if (!tabsItemsWrapper || !firstTabContent || !firstTabToggleButton)
+        throw new Error("Basic tabs can't find their required DOM Elements");
+
+      this.activeTab = {
+        content: firstTabContent,
+        toggleButton: firstTabToggleButton,
+      };
+
+      this.querySelectorAll("ul button[data-tab-id]").forEach((tabButton) => {
+        tabButton.addEventListener("click", () => {
+          const newActiveContent = tabsItemsWrapper.querySelector(
+            `[data-tab-id='${tabButton.getAttribute("data-tab-id")}']`,
+          ) as HTMLElement | null;
+
+          this.activeTab = {
+            content: newActiveContent,
+            toggleButton: tabButton as HTMLButtonElement,
+          };
+        });
       });
-    });
-  });
+    }
+  }
+
+  customElements.define("basic-tabs", BasicTabs);
 </script>
