@@ -4,47 +4,45 @@ interface Props {
 }
 
 const { toggleButtonClasses } = Astro.props;
-const dialogId = crypto.randomUUID();
 ---
 
-<button
-  class:list={[toggleButtonClasses, "dialog-toggle-button"]}
-  data-dialog-id={dialogId}
->
-  <slot name="toggle-button-icon" />
-</button>
-
-<dialog
-  id={dialogId}
-  class="absolute bg-dark w-full h-full backdrop:margin-0 margin-0"
->
-  <button class="text-white absolute w-50px right-2 z-3">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
-      ><path
-        fill="currentcolor"
-        d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
-      ></path></svg
-    >
+<basic-modal>
+  <button class:list={[toggleButtonClasses, "dialog-toggle-button"]}>
+    <slot name="toggle-button-icon" />
   </button>
 
-  <div>
-    <slot />
-  </div>
-</dialog>
+  <dialog class="absolute bg-dark w-full h-full backdrop:margin-0 margin-0">
+    <button class="text-white absolute w-50px right-2 z-3">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
+        ><path
+          fill="currentcolor"
+          d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+        ></path></svg
+      >
+    </button>
+
+    <div>
+      <slot />
+    </div>
+  </dialog>
+</basic-modal>
 
 <script>
-  document.querySelectorAll(".dialog-toggle-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      const dialogId = button.getAttribute("data-dialog-id");
-      if (!dialogId) return;
+  class BasicModal extends HTMLElement {
+    constructor() {
+      super();
 
-      (document.getElementById(dialogId) as HTMLDialogElement).showModal();
-    });
-  });
+      const dialogElement = this.querySelector<HTMLDialogElement>("dialog");
+      const openButton = this.querySelector<HTMLButtonElement>("button");
+      const closeButton = dialogElement?.querySelector("button");
 
-  document.querySelectorAll("dialog > button").forEach((button) => {
-    button.addEventListener("click", () => {
-      (button.parentElement as HTMLDialogElement).close();
-    });
-  });
+      if (!openButton || !closeButton || !dialogElement)
+        throw new Error("Basic modal can't find their required DOM Elements");
+
+      openButton.addEventListener("click", () => dialogElement.showModal());
+      closeButton.addEventListener("click", () => dialogElement.close());
+    }
+  }
+
+  customElements.define("basic-modal", BasicModal);
 </script>
