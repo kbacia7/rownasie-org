@@ -70,14 +70,14 @@ const t = useTranslation(language);
       // https://github.com/ota-meshi/eslint-plugin-astro/issues/240
       const prevButton = this.querySelector(
         "button.slider-nav-prev",
-      ) as HTMLButtonElement;
+      ) as HTMLButtonElement | null;
 
       const nextButton = this.querySelector(
         "button.slider-nav-next",
-      ) as HTMLButtonElement;
+      ) as HTMLButtonElement | null;
 
       const elementsGrid = this.querySelector<HTMLElement>(".slider-grid");
-      const firstContent = elementsGrid?.children?.[0] as HTMLElement;
+      const firstContent = elementsGrid?.children?.[0] as HTMLElement | null;
 
       if (!prevButton || !nextButton || !elementsGrid || !firstContent)
         throw new Error("Basic slider can't find their required DOM Elements");
