@@ -20,15 +20,8 @@ interface Props {
 const { language } = Astro.props;
 const t = useTranslation(language);
 
-const documentsCollection = await getCollection("documents");
-const documentsContentChunks = splitIntoChunks(
-  await Promise.all(
-    documentsCollection
-      .filter(({ id }) => id.startsWith(language))
-      .map(async (entry) => ({
-        ...entry,
-      })),
-  ),
+const entriesChunks = splitIntoChunks(
+  await getCollection("documents", ({ id }) => id.startsWith(language)),
   4,
 );
 ---
@@ -36,7 +29,7 @@ const documentsContentChunks = splitIntoChunks(
 <Section title={t("section_titles.documents")}>
   <Slider language={language}>
     {
-      documentsContentChunks.map((chunk) => (
+      entriesChunks.map((chunk) => (
         <SliderBasicGrid>
           {chunk.map((entry) => (
             <SliderBasicItem

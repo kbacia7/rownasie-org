@@ -1,12 +1,11 @@
 ---
-import { getCollection } from "astro:content";
-
 import Section from "@layouts/Section.astro";
 
 import Tabs from "@components/Tabs.astro";
 import TabItem from "@components/TabItem.astro";
 
 import toSlug from "@helpers/toSlug";
+import getCollectionEntries from "@helpers/collections/getCollectionEntries";
 import { useTranslation } from "@i18n/useTranslation";
 
 import type { Language } from "@i18n/languages";
@@ -18,26 +17,18 @@ interface Props {
 const { language } = Astro.props;
 const t = useTranslation(language);
 
-const supportCollection = await getCollection("support");
-const supportContent = await Promise.all(
-  supportCollection
-    .filter(({ slug }) => slug.startsWith(language))
-    .map(async (entry) => ({
-      ...entry,
-      Content: (await entry.render()).Content,
-    })),
-);
+const supportEntries = await getCollectionEntries("support", language);
 ---
 
 <Section title={t("section_titles.support")}>
   <Tabs
-    list={supportContent.map(({ data: { name }, slug }) => ({
+    list={supportEntries.map(({ data: { name }, slug }) => ({
       tab: name,
       id: toSlug(slug),
     }))}
   >
     {
-      supportContent.map((entry) => (
+      supportEntries.map((entry) => (
         <TabItem id={toSlug(entry.slug)}>
           <entry.Content />
         </TabItem>

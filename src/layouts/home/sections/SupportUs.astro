@@ -1,8 +1,8 @@
 ---
-import { getCollection } from "astro:content";
-
 import Section from "@layouts/Section.astro";
 import Button from "@components/Button.astro";
+
+import getCollectionEntries from "@helpers/collections/getCollectionEntries";
 import { useTranslation } from "@i18n/useTranslation";
 
 import type { Language } from "@i18n/languages";
@@ -14,18 +14,12 @@ interface Props {
 const { language } = Astro.props;
 const t = useTranslation(language);
 
-const supportUsCollection = await getCollection("support-us");
-const supportUsContent = supportUsCollection.find(
-  ({ slug }) => slug === `${language}/support-us`,
-);
-
-if (!supportUsContent) throw new Error("Support us content is missing");
-const SupportUsContent = (await supportUsContent.render()).Content;
+const supportUsEntry = (await getCollectionEntries("support-us", language))[0];
 ---
 
 <Section title={t("section_titles.support_us")}>
-  <SupportUsContent />
-  <a href={supportUsContent.data.donateLink} target="_blank">
+  <supportUsEntry.Content />
+  <a href={supportUsEntry.data.donateLink} target="_blank">
     <Button class="block m-auto">
       {t("support_us.button")}
     </Button>

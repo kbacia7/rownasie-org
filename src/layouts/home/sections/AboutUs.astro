@@ -1,6 +1,4 @@
 ---
-import { getCollection } from "astro:content";
-
 import Section from "@layouts/Section.astro";
 
 import Tabs from "@components/Tabs.astro";
@@ -8,6 +6,7 @@ import TabItem from "@components/TabItem.astro";
 import PersonDescription from "@components/PersonDescription.astro";
 import Slider from "@components/Slider/Slider.astro";
 
+import getCollectionEntries from "@helpers/collections/getCollectionEntries";
 import { useTranslation } from "@i18n/useTranslation";
 
 import type { Language } from "@i18n/languages";
@@ -19,33 +18,12 @@ interface Props {
 const { language } = Astro.props;
 const t = useTranslation(language);
 
-const aboutUsCollection = await getCollection("about-us");
-const { Content } =
-  (await aboutUsCollection
-    .find(({ slug }) => slug === `${language}/association`)
-    ?.render()) ?? {};
-
-const boardMembersCollection = await getCollection("board");
-const boardsContent = await Promise.all(
-  boardMembersCollection
-    .filter(({ slug }) => slug.startsWith(language))
-    .map(async (entry) => ({
-      ...entry,
-      Content: (await entry.render()).Content,
-    })),
+const aboutUsEntries = (await getCollectionEntries("about-us", language))[0];
+const boardsEntries = await getCollectionEntries("board", language);
+const auditCommitteesEntries = await getCollectionEntries(
+  "audit-committee",
+  language,
 );
-
-const auditCommitteeCollection = await getCollection("audit-committee");
-const auditCommitteeContent = await Promise.all(
-  auditCommitteeCollection
-    .filter(({ slug }) => slug.startsWith(language))
-    .map(async (entry) => ({
-      ...entry,
-      Content: (await entry.render()).Content,
-    })),
-);
-
-if (!Content) throw new Error("Association content is missing");
 ---
 
 <Section title={t("section_titles.about_us")}>
@@ -66,13 +44,13 @@ if (!Content) throw new Error("Association content is missing");
     ]}
   >
     <TabItem id="association">
-      <Content />
+      <aboutUsEntries.Content />
     </TabItem>
 
     <TabItem id="board">
       <Slider language={language}>
         {
-          boardsContent.map((entry) => (
+          boardsEntries.map((entry) => (
             <div id={entry.slug}>
               <PersonDescription
                 name={entry.data.name}
@@ -91,7 +69,7 @@ if (!Content) throw new Error("Association content is missing");
     <TabItem id="audit_committee">
       <Slider language={language}>
         {
-          auditCommitteeContent.map((entry) => (
+          auditCommitteesEntries.map((entry) => (
             <div id={entry.slug}>
               <PersonDescription
                 name={entry.data.name}

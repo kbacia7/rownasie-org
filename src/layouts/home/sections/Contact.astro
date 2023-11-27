@@ -1,7 +1,7 @@
 ---
-import { getCollection } from "astro:content";
-
 import Section from "@layouts/Section.astro";
+
+import getAssociationInfoEntry from "@helpers/collections/getAssociationInfoEntry";
 import { useTranslation } from "@i18n/useTranslation";
 
 import type { Language } from "@i18n/languages";
@@ -13,12 +13,7 @@ interface Props {
 const { language } = Astro.props;
 const t = useTranslation(language);
 
-const associationInfoCollection = await getCollection("association-info");
-const associationInfo = associationInfoCollection.find(
-  ({ id }) => id === `${language}/main`,
-);
-
-if (!associationInfo) throw new Error("Association info is missing");
+const associationInfoEntry = await getAssociationInfoEntry(language);
 ---
 
 <Section title={t("section_titles.contact")}>
@@ -26,10 +21,10 @@ if (!associationInfo) throw new Error("Association info is missing");
     <div class="col-span-1 xl:col-span-1">
       <h3 class="font-bold">{t("contact.office")}:</h3>
       <p class="mt-3 mb-0">
-        <a href={associationInfo.data.addressLink}>
-          {associationInfo.data.addressPartOne}
+        <a href={associationInfoEntry.data.addressLink}>
+          {associationInfoEntry.data.addressPartOne}
           <br />
-          {associationInfo.data.addressPartTwo}
+          {associationInfoEntry.data.addressPartTwo}
         </a>
       </p>
     </div>
@@ -37,26 +32,26 @@ if (!associationInfo) throw new Error("Association info is missing");
       <p class="mb-3 mt-0">
         <span>
           <span class="font-bold mr-1">{t("contact.questions")}:</span>
-          <a href=`mailto:${associationInfo.data.emailQuestions}`>
-            {associationInfo.data.emailQuestions}
+          <a href=`mailto:${associationInfoEntry.data.emailQuestions}`>
+            {associationInfoEntry.data.emailQuestions}
           </a>
         </span>
       </p>
       <p class="col-span-1 xl:col-span-2 mb-3 mt-0">
         <span class="font-bold mr-1">{t("contact.support")}:</span>
-        <a href=`mailto:${associationInfo.data.emailHelp}`>
-          {associationInfo.data.emailHelp}
+        <a href=`mailto:${associationInfoEntry.data.emailHelp}`>
+          {associationInfoEntry.data.emailHelp}
         </a>
       </p>
       <p class="mb-3 mt-0">
         <span class="font-bold mr-1">{t("contact.rodo")}:</span>
-        <a href=`mailto:${associationInfo.data.emailRodo}`
-          >{associationInfo.data.emailRodo}
+        <a href=`mailto:${associationInfoEntry.data.emailRodo}`
+          >{associationInfoEntry.data.emailRodo}
         </a>
       </p>
       <p class="mb-3 mt-0">
         <span class="font-bold mr-1">{t("contact.phone")}:</span>
-        {associationInfo.data.tel}
+        {associationInfoEntry.data.tel}
       </p>
     </div>
     <div class="hidden xl:block col-span-3 grid-row-start-2">

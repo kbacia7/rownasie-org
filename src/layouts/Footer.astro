@@ -1,8 +1,8 @@
 ---
-import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 
 import { useTranslation } from "@i18n/useTranslation";
+import getAssociationInfoEntry from "@helpers/collections/getAssociationInfoEntry";
 
 import fbIcon from "@images/fb.png";
 import igIcon from "@images/ig.png";
@@ -16,12 +16,7 @@ interface Props {
 const { language } = Astro.props;
 const t = useTranslation(language);
 
-const associationInfoCollection = await getCollection("association-info");
-const associationInfo = associationInfoCollection.find(
-  ({ id }) => id === `${language}/main`,
-);
-
-if (!associationInfo) throw new Error("Association info is missing");
+const associationInfoEntry = await getAssociationInfoEntry(language);
 ---
 
 <footer class="clear-both w-full">
@@ -37,25 +32,25 @@ if (!associationInfo) throw new Error("Association info is missing");
         <div class="my-6 xl:mt-0">
           <p class="text-lg font-bold">{t("footer.association")}</p>
           <p>
-            {associationInfo.data.addressPartOne}
+            {associationInfoEntry.data.addressPartOne}
             <br />
-            {associationInfo.data.addressPartTwo}
+            {associationInfoEntry.data.addressPartTwo}
           </p>
         </div>
         <div>
-          <p>NIP: {associationInfo.data.nip}</p>
-          <p>KRS: {associationInfo.data.krs}</p>
+          <p>NIP: {associationInfoEntry.data.nip}</p>
+          <p>KRS: {associationInfoEntry.data.krs}</p>
         </div>
       </div>
       <div>
         <div class="my-6 xl:mt-0">
           <p class="font-bold">{t("footer.bank_acc")}:</p>
-          <p set:html={associationInfo.data.bankAccount} />
+          <p set:html={associationInfoEntry.data.bankAccount} />
         </div>
       </div>
     </div>
     <div class="py-5 xl:pt-20 border-b border-b-black">
-      <a href={associationInfo.data.fbLink} rel="noopener" target="_blank">
+      <a href={associationInfoEntry.data.fbLink} rel="noopener" target="_blank">
         <Image
           class="mr-5 inline"
           src={fbIcon}
@@ -65,7 +60,7 @@ if (!associationInfo) throw new Error("Association info is missing");
         />
       </a>
 
-      <a href={associationInfo.data.igLink} rel="noopener" target="_blank">
+      <a href={associationInfoEntry.data.igLink} rel="noopener" target="_blank">
         <Image
           class="inline"
           src={igIcon}

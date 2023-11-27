@@ -1,24 +1,8 @@
 ---
-import { getCollection } from "astro:content";
-
-import toSlug from "@helpers/toSlug";
+import getProjectsStaticPaths from "@helpers/collections/getProjectsStaticPaths";
 
 export async function getStaticPaths() {
-  const projectsCollection = await getCollection("projects");
-
-  return await Promise.all(
-    projectsCollection
-      .filter(({ slug }) => slug.startsWith("en"))
-      .map(async (entry) => ({
-        props: {
-          ...entry,
-          Content: (await entry.render()).Content,
-        },
-        params: {
-          project: toSlug(entry.data.name),
-        },
-      })),
-  );
+  return await getProjectsStaticPaths("en");
 }
 
 const { Content } = Astro.props;

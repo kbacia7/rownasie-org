@@ -22,16 +22,8 @@ interface Props {
 const { language } = Astro.props;
 const t = useTranslation(language);
 
-const projectsCollection = await getCollection("projects");
-const projectsContentChunks = splitIntoChunks(
-  await Promise.all(
-    projectsCollection
-      .filter(({ slug }) => slug.startsWith(language))
-      .map(async (entry) => ({
-        ...entry,
-        Content: (await entry.render()).Content,
-      })),
-  ),
+const entriesChunks = splitIntoChunks(
+  await getCollection("projects", ({ id }) => id.startsWith(language)),
   4,
 );
 ---
@@ -39,13 +31,13 @@ const projectsContentChunks = splitIntoChunks(
 <Section title={t("section_titles.projects")}>
   <Slider language={language}>
     {
-      projectsContentChunks.map((chunk) => (
+      entriesChunks.map((chunk) => (
         <SliderBasicGrid>
           {chunk.map((entry) => {
             const href = `/${
               language !== Languages.PL ? `${language}/` : ""
             }${toSlug(entry.data.name)}`;
-            
+
             return (
               <SliderBasicItem
                 href={href}
