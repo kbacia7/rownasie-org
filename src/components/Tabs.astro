@@ -10,11 +10,11 @@ const { list } = Astro.props;
 
 <style is:global>
   div.tab-inactive {
-    @apply opacity-0 h-0 overflow-hidden;
+    @apply h-0 overflow-hidden opacity-0;
   }
 
   div.tab-active {
-    @apply opacity-100 h-auto;
+    @apply h-auto opacity-100;
   }
 
   button.tab-active {
@@ -23,10 +23,10 @@ const { list } = Astro.props;
 </style>
 
 <basic-tabs data-root-tabs>
-  <ul class="overflow-auto mb-15 whitespace-nowrap">
+  <ul class="mb-15 overflow-auto whitespace-nowrap">
     {
       list.map(({ tab, id }) => (
-        <li class="inline mr-5 last:mr-0">
+        <li class="mr-5 inline last:mr-0">
           <Button data-tab-id={id}>
             <span class="text-lg">{tab}</span>
           </Button>

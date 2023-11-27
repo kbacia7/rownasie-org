@@ -20,7 +20,7 @@ const supportUsEntry = (await getCollectionEntries("support-us", language))[0];
 <Section title={t("section_titles.support_us")}>
   <supportUsEntry.Content />
   <a href={supportUsEntry.data.donateLink} target="_blank">
-    <Button class="block m-auto">
+    <Button class="m-auto block">
       {t("support_us.button")}
     </Button>
   </a>

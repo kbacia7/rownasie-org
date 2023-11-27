@@ -11,8 +11,8 @@ const { toggleButtonClasses } = Astro.props;
     <slot name="toggle-button-icon" />
   </button>
 
-  <dialog class="bg-dark w-full h-full backdrop:margin-0 margin-0">
-    <button class="text-white absolute w-50px right-2 z-3">
+  <dialog class="bg-dark backdrop:margin-0 margin-0 h-full w-full">
+    <button class="w-50px z-3 absolute right-2 text-white">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
         ><path
           fill="currentcolor"

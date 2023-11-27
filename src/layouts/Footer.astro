@@ -27,7 +27,7 @@ const associationInfoEntry = await getAssociationInfoEntry(language);
     ></path>
   </svg>
   <div class="bg-primary px-2 xl:px-20">
-    <div class="flex justify-between flex-col xl:flex-row">
+    <div class="flex flex-col justify-between xl:flex-row">
       <div>
         <div class="my-6 xl:mt-0">
           <p class="text-lg font-bold">{t("footer.association")}</p>
@@ -49,7 +49,7 @@ const associationInfoEntry = await getAssociationInfoEntry(language);
         </div>
       </div>
     </div>
-    <div class="py-5 xl:pt-20 border-b border-b-black">
+    <div class="border-b border-b-black py-5 xl:pt-20">
       <a href={associationInfoEntry.data.fbLink} rel="noopener" target="_blank">
         <Image
           class="mr-5 inline"

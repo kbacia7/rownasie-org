@@ -16,17 +16,17 @@ const { language, classes } = Astro.props;
 const t = useTranslation(language);
 ---
 
-<header class="w-full h-full">
-  <div class:list={["bg-primary grid min-h-xl", classes]}>
+<header class="h-full w-full">
+  <div class:list={["bg-primary min-h-xl grid", classes]}>
     <div class="m-5">
       <slot name="toolbar" />
     </div>
 
     <div
-      class="pt-2 flex flex-col text-center justify-beetwen h-full items-center text-white"
+      class="justify-beetwen flex h-full flex-col items-center pt-2 text-center text-white"
     >
       <Logo language={language} />
-      <h1 class="font-bold mt-5">{t("header.motto")}</h1>
+      <h1 class="mt-5 font-bold">{t("header.motto")}</h1>
     </div>
   </div>
 
@@ -54,7 +54,7 @@ const t = useTranslation(language);
     </svg>
 
     <Image
-      class="absolute top-0 w-20% md:w-90px xl:top-15 left-1/2 -translate-x-1/2"
+      class="w-20% md:w-90px xl:top-15 absolute left-1/2 top-0 -translate-x-1/2"
       src={arrowDown}
       alt={t("images_alt.arrow_down")}
     />

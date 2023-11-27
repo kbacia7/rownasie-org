@@ -17,10 +17,10 @@ const associationInfoEntry = await getAssociationInfoEntry(language);
 ---
 
 <Section title={t("section_titles.contact")}>
-  <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 xl:gap-0">
+  <div class="grid grid-cols-1 gap-5 xl:grid-cols-3 xl:gap-0">
     <div class="col-span-1 xl:col-span-1">
       <h3 class="font-bold">{t("contact.office")}:</h3>
-      <p class="mt-3 mb-0">
+      <p class="mb-0 mt-3">
         <a href={associationInfoEntry.data.addressLink}>
           {associationInfoEntry.data.addressPartOne}
           <br />
@@ -31,30 +31,30 @@ const associationInfoEntry = await getAssociationInfoEntry(language);
     <div class="col-span-1 xl:col-span-2">
       <p class="mb-3 mt-0">
         <span>
-          <span class="font-bold mr-1">{t("contact.questions")}:</span>
+          <span class="mr-1 font-bold">{t("contact.questions")}:</span>
           <a href=`mailto:${associationInfoEntry.data.emailQuestions}`>
             {associationInfoEntry.data.emailQuestions}
           </a>
         </span>
       </p>
-      <p class="col-span-1 xl:col-span-2 mb-3 mt-0">
-        <span class="font-bold mr-1">{t("contact.support")}:</span>
+      <p class="col-span-1 mb-3 mt-0 xl:col-span-2">
+        <span class="mr-1 font-bold">{t("contact.support")}:</span>
         <a href=`mailto:${associationInfoEntry.data.emailHelp}`>
           {associationInfoEntry.data.emailHelp}
         </a>
       </p>
       <p class="mb-3 mt-0">
-        <span class="font-bold mr-1">{t("contact.rodo")}:</span>
+        <span class="mr-1 font-bold">{t("contact.rodo")}:</span>
         <a href=`mailto:${associationInfoEntry.data.emailRodo}`
           >{associationInfoEntry.data.emailRodo}
         </a>
       </p>
       <p class="mb-3 mt-0">
-        <span class="font-bold mr-1">{t("contact.phone")}:</span>
+        <span class="mr-1 font-bold">{t("contact.phone")}:</span>
         {associationInfoEntry.data.tel}
       </p>
     </div>
-    <div class="hidden xl:block col-span-3 grid-row-start-2">
+    <div class="grid-row-start-2 col-span-3 hidden xl:block">
       <iframe
         title="Google maps"
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2468.815611051249!2d19.45457077643611!3d51.77297797187484!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471bcba2e0685ba3%3A0xcabf7d1d9e9428cf!2sStowarzyszenie%20Fabryka%20R%C3%B3wno%C5%9Bci!5e0!3m2!1sen!2ses!4v1691925154740!5m2!1sen!2ses"
