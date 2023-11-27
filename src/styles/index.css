@@ -1,3 +1,7 @@
+body {
+  background: #f4e8d7;
+}
+
 body:has(dialog[open]) {
   overflow: hidden
 }
@@ -40,5 +44,5 @@ section p a:hover {
 }
 
 section p {
-  @apply my-5;
+  @apply my-5
 }
