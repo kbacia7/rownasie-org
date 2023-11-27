@@ -31,10 +31,10 @@ if (!associationInfo) throw new Error("Association info is missing");
       d="M 332.3984 7.0711 C 306.1484 2.2742 279.5234 -1.6984 252.75 0.5516 C 226.875 2.7234 203.0234 15.2469 177 16.1453 C 150.6016 17.0438 124.125 12.3953 98.5508 6.4734 C 55.5781 -3.425 21.5273 8.7234 0.0039 21.243 L 0.0039 34.7 L 374.9961 34.7 L 374.9961 15.9188 C 360.9727 12.2469 346.4961 9.6219 332.3984 7.0711 Z M 332.3984 7.0711"
     ></path>
   </svg>
-  <div class="bg-primary px-2 lg:px-20">
-    <div class="flex justify-between flex-col md:flex-row">
+  <div class="bg-primary px-2 xl:px-20">
+    <div class="flex justify-between flex-col xl:flex-row">
       <div>
-        <div class="my-6 md:mt-0">
+        <div class="my-6 xl:mt-0">
           <p class="text-lg font-bold">{t("footer.association")}</p>
           <p>
             {associationInfo.data.addressPartOne}
@@ -48,13 +48,13 @@ if (!associationInfo) throw new Error("Association info is missing");
         </div>
       </div>
       <div>
-        <div class="my-6 md:mt-0">
+        <div class="my-6 xl:mt-0">
           <p class="font-bold">{t("footer.bank_acc")}:</p>
           <p set:html={associationInfo.data.bankAccount} />
         </div>
       </div>
     </div>
-    <div class="py-5 md:pt-20 border-b border-b-black">
+    <div class="py-5 xl:pt-20 border-b border-b-black">
       <a href={associationInfo.data.fbLink} rel="noopener" target="_blank">
         <Image
           class="mr-5 inline"

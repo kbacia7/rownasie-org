@@ -12,8 +12,8 @@ const { title, full } = Astro.props;
 <section
   class:list={[
     "pt-5 pb-25",
-    { "px-5 float-right lg:w-6/10 w-full": !full },
-    { "px-20 lg:w-9/10 w-full": full },
+    { "px-5 float-right xl:w-6/10 w-full": !full },
+    { "px-20 xl:w-9/10 w-full": full },
   ]}
   data-section-slug={toSlug(title)}
   id={toSlug(title)}

@@ -30,13 +30,13 @@ const t = useTranslation(lang);
 ---
 
 <Layout title={t("meta.title")}>
-  <Header language={lang} classes="md:min-h-5xl">
+  <Header language={lang} classes="xl:min-h-5xl">
     <div class="float-left" slot="toolbar">
       <LanguageSwitch language={lang} />
     </div>
   </Header>
 
-  <div class="hidden md:block">
+  <div class="hidden xl:block">
     <Navigation
       classes="hidden top-0 fixed"
       id="desktop-menu"
@@ -45,7 +45,7 @@ const t = useTranslation(lang);
     />
   </div>
 
-  <HamburgerButton class="md:hidden">
+  <HamburgerButton class="xl:hidden">
     <Modal toggleButtonClasses="w-full">
       <svg
         xmlns="http://www.w3.org/2000/svg"

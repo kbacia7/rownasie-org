@@ -22,8 +22,8 @@ if (!associationInfo) throw new Error("Association info is missing");
 ---
 
 <Section title={t("section_titles.contact")}>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-0">
-    <div class="col-span-1 md:col-span-1">
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 xl:gap-0">
+    <div class="col-span-1 xl:col-span-1">
       <h3 class="font-bold">{t("contact.office")}:</h3>
       <p class="mt-3 mb-0">
         <a href={associationInfo.data.addressLink}>
@@ -33,7 +33,7 @@ if (!associationInfo) throw new Error("Association info is missing");
         </a>
       </p>
     </div>
-    <div class="col-span-1 md:col-span-2">
+    <div class="col-span-1 xl:col-span-2">
       <p class="mb-3 mt-0">
         <span>
           <span class="font-bold mr-1">{t("contact.questions")}:</span>
@@ -42,7 +42,7 @@ if (!associationInfo) throw new Error("Association info is missing");
           </a>
         </span>
       </p>
-      <p class="col-span-1 md:col-span-2 mb-3 mt-0">
+      <p class="col-span-1 xl:col-span-2 mb-3 mt-0">
         <span class="font-bold mr-1">{t("contact.support")}:</span>
         <a href=`mailto:${associationInfo.data.emailHelp}`>
           {associationInfo.data.emailHelp}
@@ -59,7 +59,7 @@ if (!associationInfo) throw new Error("Association info is missing");
         {associationInfo.data.tel}
       </p>
     </div>
-    <div class="hidden md:block col-span-3 grid-row-start-2">
+    <div class="hidden xl:block col-span-3 grid-row-start-2">
       <iframe
         title="Google maps"
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2468.815611051249!2d19.45457077643611!3d51.77297797187484!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471bcba2e0685ba3%3A0xcabf7d1d9e9428cf!2sStowarzyszenie%20Fabryka%20R%C3%B3wno%C5%9Bci!5e0!3m2!1sen!2ses!4v1691925154740!5m2!1sen!2ses"
