@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 
 import { useTranslation } from "@i18n/useTranslation";
 
-import arrow from "@images/move_down.png";
+import arrowDown from "@images/arrow.png";
 
 import type { Language } from "@i18n/languages";
 
@@ -25,7 +25,7 @@ const t = useTranslation(language);
   <div class="flex justify-center">
     <button class="slider-nav-prev">
       <Image
-        src={arrow}
+        src={arrowDown}
         alt={t("images_alt.slider_arrow_left")}
         width={30}
         height={30}
@@ -34,7 +34,7 @@ const t = useTranslation(language);
     </button>
     <button class="slider-nav-next">
       <Image
-        src={arrow}
+        src={arrowDown}
         alt={t("images_alt.slider_arrow_right")}
         width={30}
         height={30}

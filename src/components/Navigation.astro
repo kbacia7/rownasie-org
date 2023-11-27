@@ -4,7 +4,7 @@ import { Image } from "astro:assets";
 import toSlug from "@helpers/toSlug";
 import { useTranslation } from "@i18n/useTranslation";
 
-import brandImg from "@images/brand.png";
+import brand from "@images/logo/brand.png";
 
 import type { Language } from "@i18n/languages";
 
@@ -61,7 +61,7 @@ const sections = Object.values(t("section_titles"));
         <div class="w-300px md:w-500px">
           <Image
             class="navigation-wheel"
-            src={brandImg}
+            src={brand}
             alt={t("images_alt.brand")}
           />
         </div>
