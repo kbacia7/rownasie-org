@@ -16,6 +16,7 @@ export default {
     },
     meta: {
       title: "Fabryka Równości",
+      description: "To z fabryk wychodzą rewolucje!",
     },
     header: {
       motto: "To z fabryk wychodzą rewolucje!",
@@ -69,6 +70,7 @@ export default {
     },
     meta: {
       title: "Equality Factory",
+      description: "Revolutions starts in factories!",
     },
     header: {
       motto: "Revolutions starts in factories!",

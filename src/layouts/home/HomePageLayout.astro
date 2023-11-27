@@ -6,7 +6,6 @@ import Modal from "@components/Modal.astro";
 import HamburgerButton from "@components/HamburgerButton.astro";
 import LanguageSwitch from "@components/LanguageSwitch.astro";
 
-import { useTranslation } from "@i18n/useTranslation";
 import { type Language } from "@i18n/languages";
 
 import AboutUs from "./sections/AboutUs.astro";
@@ -26,10 +25,9 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const t = useTranslation(lang);
 ---
 
-<Layout title={t("meta.title")}>
+<Layout language={lang}>
   <Header language={lang} classes="xl:min-h-5xl">
     <div class="float-left" slot="toolbar">
       <LanguageSwitch language={lang} />

@@ -1,21 +1,32 @@
 ---
+import { useTranslation } from "@i18n/useTranslation";
+
+import type { Language } from "@i18n/languages";
 interface Props {
-  title: string;
+  language: Language;
 }
 
-const { title } = Astro.props;
+const { language } = Astro.props;
+const t = useTranslation(language);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={language}>
   <head>
+    <link rel="canonical" href="https://rownasie.org" />
+    <link rel="alternate" href="https://rownasie.org/en" hreflang="en" />
+    <link rel="alternate" href="https://rownasie.org" hreflang="pl" />
+    <link rel="alternate" href="https://rownasie.org" hreflang="x-default" />
+
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
+    <meta name="description" content={t("meta.description")} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:title" content={t("meta.title")} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rownasie.org" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <!-- TODO: Add missing SEO tags -->
+    <title>{t("meta.title")}</title>
   </head>
   <body class="font-sans">
     <slot />
