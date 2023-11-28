@@ -18,12 +18,19 @@ interface Props {
 const { language } = Astro.props;
 const t = useTranslation(language);
 
-const aboutUsEntries = (await getCollectionEntries("about-us", language))[0];
-const boardsEntries = await getCollectionEntries("board", language);
-const auditCommitteesEntries = await getCollectionEntries(
-  "audit-committee",
+const associationEntry = (
+  await getCollectionEntries("about-us", language, ({ slug }) =>
+    slug.includes("association"),
+  )
+)[0];
+
+const boardsEntries = await getCollectionEntries(
+  "about-us",
   language,
+  ({ slug }) => slug.includes("board/"),
 );
+
+const auditCommitteesEntries = await getCollectionEntries("about-us", language);
 ---
 
 <Section title={t("section_titles.about_us")}>
@@ -44,24 +51,27 @@ const auditCommitteesEntries = await getCollectionEntries(
     ]}
   >
     <TabItem id="association">
-      <aboutUsEntries.Content />
+      <associationEntry.Content />
     </TabItem>
 
     <TabItem id="board">
       <Slider language={language}>
         {
-          boardsEntries.map((entry) => (
-            <div id={entry.slug}>
-              <PersonDescription
-                name={entry.data.name}
-                photo={entry.data.photo}
-                title={entry.data.title}
-                language={language}
-              >
-                <entry.Content />
-              </PersonDescription>
-            </div>
-          ))
+          boardsEntries.map(
+            (entry) =>
+              entry.data.person && (
+                <div id={entry.slug}>
+                  <PersonDescription
+                    name={entry.data.person.name}
+                    photo={entry.data.person.photo}
+                    title={entry.data.person.title}
+                    language={language}
+                  >
+                    <entry.Content />
+                  </PersonDescription>
+                </div>
+              ),
+          )
         }
       </Slider>
     </TabItem>
@@ -69,18 +79,21 @@ const auditCommitteesEntries = await getCollectionEntries(
     <TabItem id="audit_committee">
       <Slider language={language}>
         {
-          auditCommitteesEntries.map((entry) => (
-            <div id={entry.slug}>
-              <PersonDescription
-                name={entry.data.name}
-                photo={entry.data.photo}
-                title={entry.data.title}
-                language={language}
-              >
-                <entry.Content />
-              </PersonDescription>
-            </div>
-          ))
+          auditCommitteesEntries.map(
+            (entry) =>
+              entry.data.person && (
+                <div id={entry.slug}>
+                  <PersonDescription
+                    name={entry.data.person.name}
+                    photo={entry.data.person.photo}
+                    title={entry.data.person.title}
+                    language={language}
+                  >
+                    <entry.Content />
+                  </PersonDescription>
+                </div>
+              ),
+          )
         }
       </Slider>
     </TabItem>

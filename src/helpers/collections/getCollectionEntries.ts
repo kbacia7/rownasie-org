@@ -1,13 +1,20 @@
-import { getCollection, type ContentCollectionKey } from "astro:content";
+import {
+  getCollection,
+  type ContentCollectionKey,
+  type CollectionEntry,
+} from "astro:content";
 
 import type { Language } from "@i18n/languages";
 
-const getCollectionEntries = async (
-  name: ContentCollectionKey,
+const getCollectionEntries = async <T extends ContentCollectionKey>(
+  name: T,
   language: Language,
+  filter?: (entry: CollectionEntry<T>) => boolean,
 ) => {
-  const collection = await getCollection(name, ({ slug }) =>
-    slug.startsWith(language),
+  const extraFilter = filter || (() => true);
+  const collection = await getCollection(
+    name,
+    (entry) => entry.slug.startsWith(language) && extraFilter(entry),
   );
 
   return await Promise.all(
