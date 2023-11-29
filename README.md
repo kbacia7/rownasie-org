@@ -1,54 +1,62 @@
-# Astro Starter Kit: Basics
+# rownasie.org - SSG Website of Equality Factory Association
 
-```sh
-npm create astro@latest -- --template basics
+## Techstack
+* Astro (and WebComponents API)
+* TailwindCSS (and UnoCSS)
+* TypeScript
+* And for linting: eslint & prettier
+
+## Run
+```
+yarn install
+yarn run dev # yarn run build for production
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## How to edit content
+Website is SSG, after every commit to `main` branch, Github Action generates new version of website and updates rownasie.org.
+All content of website can be easily modified by content files (markdown & json), which are located in `content/` directory.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+`/content` simplified tree:
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+```
+.
+|-- about-us
+|   |-- en
+|   |   |-- association.md
+|   |   |-- audit-committee
+|   |   `-- board
+|   |-- images
+|   `-- pl
+|       |-- association.md
+|       |-- audit-committee
+|       `-- board
+|           
+|-- association-info
+|   |-- en
+|   |   `-- main.json
+|   `-- pl
+|       `-- main.json
+|-- documents
+|   |-- en
+|   `-- pl
+|-- projects
+|   |-- en
+|   `-- pl
+|-- support
+|   |-- en
+|   `-- pl
+`-- support-us
+    |-- en
+    |   `-- support-us.md
+    `-- pl
+        `-- support-us.md
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Like shown, every subdirectory in `content/` contains subdirectories `en/` and `pl/` with content for english & polish versions of website. 
+Simple description of every directory with content:
+* `about-us/` - Represents "About us" section on website, contains subdirectories `board/` and `audit-committee/` with markdown files which are represents persons in Audit committee/Board tabs. Directory contains also file `association.md` (in this case, filename is important) which represents descritpion in "Association" tab
+* `association-info/` - There always `main.json` file with detailed informations of association (ex.: NIP, e-mails, address etc.). Used by "Contact" section on website and footer
+* `documents` - Represents "Documents" section on website, contains JSON files with file description and filename. Files have to be located in `public/documents/` directory
+* `projects` - Represents "Projects" section on website, every file after compilation represents single project page. Page paths are project titles
+* `support/` - Represents "Support" section on website, every file represents another tab in section
+* `support-us/` - Represents "Support us" section on website, only `support-us.md` file is used for content
