@@ -91,8 +91,13 @@ const { list } = Astro.props;
 
       this.querySelectorAll("ul button[data-tab-id]").forEach((tabButton) => {
         tabButton.addEventListener("click", () => {
+          const activeTabId =
+            this.activeTab?.toggleButton.getAttribute("data-tab-id");
+          const newTabId = tabButton.getAttribute("data-tab-id");
+          if (newTabId === activeTabId) return;
+
           const newActiveContent = tabsItemsWrapper.querySelector(
-            `[data-tab-id='${tabButton.getAttribute("data-tab-id")}']`,
+            `[data-tab-id='${newTabId}']`,
           ) as HTMLElement | null;
 
           this.activeTab = {
