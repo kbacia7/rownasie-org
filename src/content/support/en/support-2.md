@@ -2,8 +2,8 @@
 name: "Transgender"
 ---
 
-Are you an LGBTQ+ person? Do you encounter difficulties due to this fact or do you want to talk about your experiences in an atmosphere of understanding and acceptance? Are you planning to come out, but you don't know how to prepare for it? Are you looking for people full of empathy and warmth? If you answered yes to at least one of these questions - the support group run by the Equality Factory is for you.
+Are you a transgender person looking for support? Do you need understanding or want to exchange experiences with other transgender people? Or maybe you are wondering what to do to feel better,  where to look for support? 
 
-We create a safe place where each person can confidently share their difficulties and problems with acceptance related to being themselves, experience in difficult situations, thoughts and feelings, and other issues.
+If so, we invite you to the meetings of the support group for transgender people! Here you will have the opportunity to share your experiences and hear how others have dealt with these or similar issues. And if you don't want to say anything - you don't have to, you can just listen. The group aims to create a comfortable atmosphere that will allow people to take a break from their problems and show them that they are not alone. 
 
 Meetings are held under the supervision of an experienced psychotherapist. You can join the group during the recruitment period. If you want to join - contact us at pomoc@rownasie.org

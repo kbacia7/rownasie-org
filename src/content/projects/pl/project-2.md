@@ -10,4 +10,11 @@ Hasła nawiązują do sytuacji politycznej w Polsce, ale również do lokalnych 
 
 Marszom Równości zawsze towarzyszy Łódzki Maraton Równości. Tydzień poprzedzający sam przemarsz wypełniony jest serią queerowych wydarzeń, tj. różnego rodzaju warsztatami (makijażu, antydyskryminacyjnymi, z edukacji seksualnej, z praw osoby demonstrującej, o zapobieganiu przemocy w sieci etc.), dyskusjami (o transpłciowości, artystach_kach queerowych, innych wykluczonych, ciałopozytywności, rodzicach osób LGBTQ+, tęczowych rodzinach, queerowość na kółkach, feminizmie, seks zabawkach etc.), wykładami i konferencjami (o queerowej Łodzi czy równej szkole), projekcjami filmów, queer-wycieczkami po Łodzi z przewodnikiem_czką, imprezami (tanecznymi, z drag queens, koncertami, karaoke, piknikami, spotkaniami przy planszówkach, spotkaniami dla osób anglojęzycznych), wspólnymi przygotowaniami transparentów, żywymi bibliotekami. Wszystko to organizowane było i jest przez garstkę zaangażowanych osób, przy wsparciu wolontariuszy_ek.
 
-Wydarzenia z ostatniego, 10-go Maratonu Równości:
+Wydarzenia z ostatniego, 12-go Maratonu Równości:
+* [12. Marsz Równości](https://www.facebook.com/events/607694587601261/)
+* [Before Party](https://www.facebook.com/events/715920940283291/)
+* [Razem dla Akceptacji](https://www.facebook.com/events/1267596404132845/)
+* [Spotkanie z pisarzem - Mikołaj Milcke](https://www.facebook.com/events/141995415500260/)
+* [Dyskryminacja w społeczności LGBTQ+](https://www.facebook.com/events/1289533951921378/)
+* [Queerowość, a neuroróżnorodność](https://www.facebook.com/events/1222704161766365/)
+* [LGBTQ+ safe zone](https://www.facebook.com/events/6096425360422477/)

@@ -11,8 +11,18 @@ dialog:modal {
   max-height: 100%;
 }
 
-p {
+p, li {
   @apply lg:text-xl text-base
+}
+
+ol {
+  list-style: decimal;
+  list-style-position: inside;
+}
+
+ul {
+  list-style: disc;
+  list-style-position: inside;
 }
 
 h1 {
@@ -31,15 +41,15 @@ h4 {
   @apply lg:text-3xl text-2xl
 }
 
-section p a {
+section p a, section div.markdown-content a {
   @apply text-secondary-800 underline
 }
 
-section p a:visited {
+section p a:visited, section div.markdown-content a:visited {
   @apply text-secondary-900
 }
 
-section p a:hover {
+section p a:hover, section div.markdown-content a:hover {
   @apply text-secondary-700
 }
 

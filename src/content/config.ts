@@ -20,6 +20,7 @@ const projectsCollection = defineCollection({
     z.object({
       name: z.string(),
       description: z.string(),
+      href: z.string().optional(),
     }),
 });
 

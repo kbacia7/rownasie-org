@@ -5,8 +5,9 @@ import toSlug from "@helpers/toSlug";
 import type { Language } from "@i18n/languages";
 
 const getProjectsStaticPaths = async (language: Language) => {
-  const projectsEntries = await getCollection("projects", ({ slug }) =>
-    slug.startsWith(language),
+  const projectsEntries = await getCollection(
+    "projects",
+    ({ slug, data: { href } }) => slug.startsWith(language) && !href,
   );
 
   return await Promise.all(

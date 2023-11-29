@@ -34,9 +34,11 @@ const entriesChunks = splitIntoChunks(
       entriesChunks.map((chunk) => (
         <SliderBasicGrid>
           {chunk.map((entry) => {
-            const href = `/${
-              language !== Languages.PL ? `${language}/` : ""
-            }${toSlug(entry.data.name)}`;
+            let href =
+              entry.data.href ||
+              `/${language !== Languages.PL ? `${language}/` : ""}${toSlug(
+                entry.data.name,
+              )}`;
 
             return (
               <SliderBasicItem

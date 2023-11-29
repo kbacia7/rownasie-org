@@ -12,11 +12,21 @@ import "@styles/index.css";
 const { frontmatter, file } = Astro.props;
 const language = file.split("/").at(-2);
 const t = useTranslation(language);
+
+import "@styles/index.css";
 ---
 
 <style is:global>
   p {
     @apply mb-5;
+  }
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply my-5;
   }
 
   footer p {
@@ -40,7 +50,9 @@ const t = useTranslation(language);
   </Header>
 
   <Section title={frontmatter.name} full>
-    <slot />
+    <div class="markdown-content">
+      <slot />
+    </div>
   </Section>
 
   <Footer language={language} />
