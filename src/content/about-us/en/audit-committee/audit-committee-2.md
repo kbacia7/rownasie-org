@@ -1,8 +1,8 @@
 ---
 person:
-  photo: "../../images/person.png"
-  name: "Loreum Ipsum"
-  title: "Loreum Ipsum title"
+  photo: "../../images/audit-committee-1.jpg"
+  name: "Charlie Nowacki"
+  title: "Member of the Audit Committee"
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor eleifend ultricies. Vestibulum non magna ac arcu finibus blandit vitae a nunc. Donec augue nulla, tincidunt sed tellus nec, egestas laoreet mi. Integer sed lorem tincidunt, finibus leo et, interdum libero. Suspendisse potenti. In faucibus, justo quis blandit placerat, velit nisi vulputate purus, id convallis nisl metus ac tortor. Aliquam erat volutpat. Etiam ut erat magna.
+Activist for the LGBTQ+ and neurodiverse communities, working at the Equality Factory since January 2021. He began his adventure in activism in his school group Amnesty International in the first year of high school. In the association, she organizes events and creates content for social media. By day, a student person, interested in voice training, cooking and sci-fi movies.

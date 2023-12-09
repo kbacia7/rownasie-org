@@ -25,13 +25,7 @@ const projectsCollection = defineCollection({
 });
 
 const documentsCollection = defineCollection({
-  type: "data",
-  schema: () =>
-    z.object({
-      name: z.string(),
-      description: z.string(),
-      filename: z.string(),
-    }),
+  type: "content",
 });
 
 const supportCollection = defineCollection({

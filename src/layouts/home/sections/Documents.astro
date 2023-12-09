@@ -1,14 +1,7 @@
 ---
-import { getCollection } from "astro:content";
-
 import Section from "@layouts/Section.astro";
 
-import SliderBasicItem from "@components/Slider/SliderBasicItem.astro";
-import SliderBasicGrid from "@components/Slider/SliderBasicGrid.astro";
-import Slider from "@components/Slider/Slider.astro";
-
-import splitIntoChunks from "@helpers/splitIntoChunks";
-
+import getCollectionEntries from "@helpers/collections/getCollectionEntries";
 import { useTranslation } from "@i18n/useTranslation";
 
 import type { Language } from "@i18n/languages";
@@ -20,28 +13,9 @@ interface Props {
 const { language } = Astro.props;
 const t = useTranslation(language);
 
-const entriesChunks = splitIntoChunks(
-  await getCollection("documents", ({ id }) => id.startsWith(language)),
-  4,
-);
+const documentsEntry = (await getCollectionEntries("documents", language))[0];
 ---
 
 <Section title={t("section_titles.documents")}>
-  <Slider language={language}>
-    {
-      entriesChunks.map((chunk) => (
-        <SliderBasicGrid>
-          {chunk.map((entry) => (
-            <SliderBasicItem
-              href={`/documents/${entry.data.filename}`}
-              language={language}
-              name={entry.data.name}
-            >
-              {entry.data.description}
-            </SliderBasicItem>
-          ))}
-        </SliderBasicGrid>
-      ))
-    }
-  </Slider>
+  <documentsEntry.Content />
 </Section>

@@ -1,8 +1,9 @@
 ---
 person:
-  photo: "../../images/person.png"
-  name: "Loreum Ipsum"
-  title: "Loreum Ipsum title"
+  photo: "../../images/audit-committee-1.jpg"
+  name: "Joanna Ignatowicz"
+  title: "Member of the Audit Committee"
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor eleifend ultricies. Vestibulum non magna ac arcu finibus blandit vitae a nunc. Donec augue nulla, tincidunt sed tellus nec, egestas laoreet mi. Integer sed lorem tincidunt, finibus leo et, interdum libero. Suspendisse potenti. In faucibus, justo quis blandit placerat, velit nisi vulputate purus, id convallis nisl metus ac tortor. Aliquam erat volutpat. Etiam ut erat magna.
+At the Equality Factory since 2022, she is eagerly involved in projects aimed at cooperation and organizing cultural or educational events. She co-manages social media channels and supports in other activities promoting equality.
+Privately, she is an animal lover and proud mother of an adopted male cat. She is interested in equality issues, but also gameplays and video essays on various socio-cultural topics.

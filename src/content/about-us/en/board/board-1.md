@@ -1,8 +1,8 @@
 ---
 person:
-  photo: "../../images/person.png"
-  name: "Loreum Ipsum"
-  title: "Loreum Ipsum title"
+  photo: "../../images/board-1.jpg"
+  name: "Ida Mickiewicz-Florczak"
+  title: "Chairperson"
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor eleifend ultricies. Vestibulum non magna ac arcu finibus blandit vitae a nunc. Donec augue nulla, tincidunt sed tellus nec, egestas laoreet mi. Integer sed lorem tincidunt, finibus leo et, interdum libero. Suspendisse potenti. In faucibus, justo quis blandit placerat, velit nisi vulputate purus, id convallis nisl metus ac tortor. Aliquam erat volutpat. Etiam ut erat magna.
+Equality trainer, sex educator and activist for the LGBTQ+ community. President of the Equality Factory Association. Graduate of the Faculty of Education Sciences at the University of Lodz. Behavioral addiction therapist, she has been working for nearly 4 years at domestic violence prevention centers in Łódź.

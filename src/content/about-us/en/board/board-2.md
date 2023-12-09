@@ -1,8 +1,9 @@
 ---
 person:
-  photo: "../../images/person.png"
-  name: "Loreum Ipsum"
-  title: "Loreum Ipsum title"
+  photo: "../../images/board-2.jpg"
+  name: "Maciej Kucharski"
+  title: "Vice chairperson"
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor eleifend ultricies. Vestibulum non magna ac arcu finibus blandit vitae a nunc. Donec augue nulla, tincidunt sed tellus nec, egestas laoreet mi. Integer sed lorem tincidunt, finibus leo et, interdum libero. Suspendisse potenti. In faucibus, justo quis blandit placerat, velit nisi vulputate purus, id convallis nisl metus ac tortor. Aliquam erat volutpat. Etiam ut erat magna.
+He began his activist work several years ago at the Asfera Association. Currently, he is primarily associated with the Equality Factory Association, where he works for the rights and visibility of people under the LGBTQIA+ umbrella. He firmly believes that through his activity in the field of promoting equality and anti-discrimination education, he contributes to spreading attitudes of acceptance among society towards non-heteronormative people.
+Privately, he is a graduate and employee of the Technical University of Lodz and passionate about horse riding and Scandinavian music.

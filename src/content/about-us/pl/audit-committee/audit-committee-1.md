@@ -1,8 +1,9 @@
 ---
 person:
-  photo: "../../images/person.png"
-  name: "Loreum Ipsum"
-  title: "Loreum Ipsum title"
+  photo: "../../images/audit-committee-1.jpg"
+  name: "Joanna Ignatowicz"
+  title: "Osoba członkowska Komisji Rewizyjnej"
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor eleifend ultricies. Vestibulum non magna ac arcu finibus blandit vitae a nunc. Donec augue nulla, tincidunt sed tellus nec, egestas laoreet mi. Integer sed lorem tincidunt, finibus leo et, interdum libero. Suspendisse potenti. In faucibus, justo quis blandit placerat, velit nisi vulputate purus, id convallis nisl metus ac tortor. Aliquam erat volutpat. Etiam ut erat magna.
+W Fabryce Równości od 2022 roku, chętnie angażuje się w projekty skierowane na współpracę i organizację wydarzeń kulturalnych lub edukacyjnych. Wspołzarządza kanałami social media i wspiera w innych działaniach propagujących równość.
+Prywatnie miłośniczka zwierząt i dumna mama adoptowanego kocura. Interesują ją tematy równościowe, ale również gameplaye i wideoeseje na przeróżne tematy społeczno-kulturalne.
