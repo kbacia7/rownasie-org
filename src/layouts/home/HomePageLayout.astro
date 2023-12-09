@@ -6,6 +6,7 @@ import Modal from "@components/Modal.astro";
 import HamburgerButton from "@components/HamburgerButton.astro";
 import LanguageSwitch from "@components/LanguageSwitch.astro";
 
+import { useTranslation } from "@i18n/useTranslation";
 import { type Language } from "@i18n/languages";
 
 import AboutUs from "./sections/AboutUs.astro";
@@ -25,6 +26,7 @@ interface Props {
 }
 
 const { lang } = Astro.props;
+const t = useTranslation(lang);
 ---
 
 <Layout language={lang}>
@@ -44,7 +46,15 @@ const { lang } = Astro.props;
   </div>
 
   <HamburgerButton class="xl:hidden">
-    <Modal toggleButtonClasses="w-full">
+    <Modal
+      openModalButtonProps={{
+        class: "w-full",
+        "aria-label": t("images_alt.open_hamburger_modal"),
+      }}
+      closeModalButtonProps={{
+        "aria-label": t("images_alt.close_hamburger_modal"),
+      }}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 -960 960 960"

@@ -1,18 +1,26 @@
 ---
+import type { HTMLAttributes } from "astro/types";
 interface Props {
-  toggleButtonClasses: string;
+  openModalButtonProps?: HTMLAttributes<"button">;
+  closeModalButtonProps?: HTMLAttributes<"button">;
 }
 
-const { toggleButtonClasses } = Astro.props;
+const { openModalButtonProps, closeModalButtonProps } = Astro.props;
 ---
 
 <basic-modal>
-  <button class:list={[toggleButtonClasses, "dialog-toggle-button"]}>
+  <button
+    class:list={[openModalButtonProps?.class, "dialog-toggle-button"]}
+    {...openModalButtonProps}
+  >
     <slot name="toggle-button-icon" />
   </button>
 
   <dialog class="bg-dark backdrop:margin-0 margin-0 h-full w-full">
-    <button class="w-50px z-3 absolute right-2 text-white">
+    <button
+      class="w-50px z-3 absolute right-2 text-white"
+      {...closeModalButtonProps}
+    >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
         ><path
           fill="currentcolor"

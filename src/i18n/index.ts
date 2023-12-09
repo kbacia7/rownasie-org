@@ -3,6 +3,8 @@ import { Languages } from "./languages";
 export default {
   [Languages.PL]: {
     images_alt: {
+      open_hamburger_modal: "Otwórz modal z nawigacją",
+      close_hamburger_modal: "Zamknij modal z nawigacją",
       arrow_down: "Strzałka w dół",
       logo: "Logo Fabryki Równości",
       brand: "Brandowa zębatka Fabryki Równości",
@@ -57,6 +59,8 @@ export default {
   },
   [Languages.EN]: {
     images_alt: {
+      open_hamburger_modal: "Open modal with navigation",
+      close_hamburger_modal: "Close modal with navigation",
       arrow_down: "Simple arrow down",
       logo: "Equality Factory logo",
       brand: "Equality Factory brand wheel",
