@@ -13,7 +13,8 @@ const { list } = Astro.props;
     @apply h-0 overflow-hidden opacity-0;
   }
 
-  div.tab-active {
+  div.tab-active,
+  div.tabs-wrapper:not([data-tabs-initialized]) > div.tab-inactive:first-child {
     @apply h-auto opacity-100;
   }
 
@@ -84,6 +85,7 @@ const { list } = Astro.props;
       if (!tabsItemsWrapper || !firstTabContent || !firstTabToggleButton)
         throw new Error("Basic tabs can't find their required DOM Elements");
 
+      tabsItemsWrapper.setAttribute("data-tabs-initialized", "true");
       this.activeTab = {
         content: firstTabContent,
         toggleButton: firstTabToggleButton,
