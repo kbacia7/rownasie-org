@@ -146,6 +146,7 @@ const sections = Object.values(t("section_titles"));
 
   class BasicNavigation extends HTMLElement {
     #navigationWheel: HTMLImageElement;
+    #nav: HTMLElement;
     #wheelRotation: number = 30;
 
     #activeItem?: BasicNavigationItem | null;
@@ -199,13 +200,13 @@ const sections = Object.values(t("section_titles"));
       }
     }
 
-    rotateWheel(wheelItem: BasicNavigationItem, onFinish: () => void) {
+    rotateWheel(navigationItem: BasicNavigationItem) {
       const currentActivePositionOnSite =
         this.activeItem?.itemPositionOnSite || 0;
 
       let nextRotation =
         this.#wheelRotation +
-        (currentActivePositionOnSite > wheelItem.itemPositionOnSite ? 30 : -30);
+        (navigationItem.itemPositionOnSite - currentActivePositionOnSite) * 30;
 
       const anim = this.#navigationWheel.animate(
         [
@@ -224,17 +225,40 @@ const sections = Object.values(t("section_titles"));
           anim.commitStyles();
           anim.cancel();
         }
-
-        onFinish();
       });
+    }
+
+    toggleVisiblity(visible: boolean) {
+      if (visible) {
+        if (this.#nav.classList.contains("hidden")) {
+          this.#nav.classList.remove("hidden");
+          this.#nav.animate(
+            [{ transform: `translateX(-50%)` }, { transform: `translateX(0)` }],
+            {
+              duration: 450,
+            },
+          );
+        }
+      } else {
+        this.#nav
+          .animate(
+            [{ transform: `translateX(0)` }, { transform: `translateX(-50%)` }],
+            {
+              duration: 450,
+            },
+          )
+          .finished.then(() => {
+            this.#nav.classList.add("hidden");
+          });
+      }
     }
 
     constructor() {
       super();
 
+      const nav = this.querySelector<HTMLElement>("nav");
       const navigationWheel =
         this.querySelector<HTMLImageElement>(".navigation-wheel");
-      const nav = this.querySelector("nav");
 
       if (!navigationWheel || !nav)
         throw new Error(
@@ -242,6 +266,7 @@ const sections = Object.values(t("section_titles"));
         );
 
       this.#navigationWheel = navigationWheel;
+      this.#nav = nav;
       const observer = new IntersectionObserver(
         (entries) => {
           // eslint-disable-next-line no-undef
@@ -259,41 +284,13 @@ const sections = Object.values(t("section_titles"));
                   `[${ATTR_ITEM_ID}='${newItemId}']`,
                 ) as BasicNavigationItem;
 
-                this.rotateWheel(newActiveItem, () => {
-                  this.activeItem = newActiveItem;
-                });
+                this.rotateWheel(newActiveItem);
+                this.activeItem = newActiveItem;
               }
             });
 
             if (this.autoHide) {
-              if (anyIntersect) {
-                if (nav.classList.contains("hidden")) {
-                  nav.classList.remove("hidden");
-                  nav.animate(
-                    [
-                      { transform: `translateX(-50%)` },
-                      { transform: `translateX(0)` },
-                    ],
-                    {
-                      duration: 450,
-                    },
-                  );
-                }
-              } else {
-                nav
-                  .animate(
-                    [
-                      { transform: `translateX(0)` },
-                      { transform: `translateX(-50%)` },
-                    ],
-                    {
-                      duration: 450,
-                    },
-                  )
-                  .finished.then(() => {
-                    nav.classList.add("hidden");
-                  });
-              }
+              this.toggleVisiblity(anyIntersect);
             }
           }, 150)(entries);
         },
