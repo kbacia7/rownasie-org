@@ -30,7 +30,11 @@ const boardsEntries = await getCollectionEntries(
   ({ slug }) => slug.includes("board/"),
 );
 
-const auditCommitteesEntries = await getCollectionEntries("about-us", language);
+const auditCommitteesEntries = await getCollectionEntries(
+  "about-us",
+  language,
+  ({ slug }) => slug.includes("audit-committee/"),
+);
 ---
 
 <Section title={t("section_titles.about_us")}>
