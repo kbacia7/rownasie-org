@@ -1,0 +1,18 @@
+# I use Traefik to reverse proxy on my k8s
+# https://doc.traefik.io/traefik/providers/kubernetes-crd/
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingress-router-ef-old-website
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`ef-old.kbac.dev`)
+    kind: Rule
+    services:
+    - name: ef-old-website
+      port: 80
+  tls:
+    certResolver: le
+
